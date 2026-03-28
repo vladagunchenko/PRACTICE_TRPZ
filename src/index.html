@@ -3,9 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel = "stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <title>Тask management</title>
 </head>
 <body>
-    
+    <div class = "container">
+        <div class = "left-panel active">
+            <div class ="menu-btn"><img src="img/left.png" alt=" " class ="img-btn"></div>
+            <div class = "head">
+            <div class = "user-img">
+                <img src="img/user.png" alt=" ">
+            </div>
+            <div class = "user-details">
+                <p class = "title">Guest</p>
+                <p class = "name">Not logged in</p>
+            </div>
+            </div>
+            <div class ="nav">
+<div class = "menu-top">
+                <div class ="menu">
+                    <p class = "title">Main</p>
+                    <ul>
+                        <li class = "active">
+                        <a href="#"><img src="img/archive.png" class = "icon">
+                        <span class = "text">Archive</span>
+                        </a>
+                        </li>
+                        <li class = "lang-menu">
+                        <a href="#" class = "selected-lang" id="current-lang">
+                            <img src="img/usa_flag.png" class = "icon-flag">ENG
+                        </a> 
+                        <ul class = "lang-list" id = "lang-list">
+                           <li data-lang="ENG" data-src="img/usa_flag.png">
+                            <a href="#"><img src="img/usa_flag.png" class="icon-flag">ENG</a>
+                            </li>
+                            <li data-lang="UA" data-src="img/ua_flag.png">
+                            <a href="#"><img src="img/ua_flag.png" class="icon-flag">UA</a>
+                            </li>
+                        </ul>
+                        </li>
+                    </div>
+                        <div class ="menu">
+                         <p class = "title">SETTING</p>
+                         <ul>
+                            <li class = "active">
+                                <a href="#"><img src="img/setting.png" class = "icon">
+                                <span class = "text">Setting</span>
+                                </a>
+                            </li>
+                        </ul>
+                        </div>
+</div>
+<div class = "menu-bottom">
+                        <div class ="menu">
+                         <p class = "title">ACCOUNT</p>
+                         <ul>
+                            <li>
+                                <a href="#"><img src="img/info.png" class = "icon">
+                                <span class = "text">About</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#"><img src="img/exit.png" class = "icon">
+                                <span class = "text">Exit</span>
+                                </a>
+                            </li>
+                        </ul>
+                        </div>
+                </div>
+            </div>
+        </div>
+        </div>
 </body>
+<script>
+const currentLang = document.getElementById('current-lang');
+const langList = document.getElementById('lang-list');
+
+function deleteLang(selectedLang) {
+    langList.querySelectorAll('li').forEach(li => {
+        li.style.display = li.dataset.lang === selectedLang ? 'none' : 'block';
+    });
+}
+
+deleteLang('ENG');
+
+currentLang.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    langList.style.display = langList.style.display === 'block' ? 'none' : 'block';
+});
+
+langList.querySelectorAll('li').forEach(li =>{
+    li.addEventListener('click', (e) =>{
+        e.stopPropagation();
+    const lang = li.dataset.lang;
+    const src = li.dataset.src;
+    currentLang.innerHTML = `<img src="${src}" class="icon-flag"> ${lang}`;
+    langList.style.display = 'none';
+    deleteLang(lang);
+ });
+
+});
+ document.addEventListener('click', (e) => {
+    if (!currentLang.contains(e.target) && !langList.contains(e.target)) {
+        langList.style.display = 'none';
+    }
+});
+
+
+
+$(".menu > ul > li").click(function (e) {
+    $(this).siblings().removeClass("active");
+    $(this).toggleClass("active");
+    $(this).find("ul").slideToggle();
+    $(this).siblings().find("ul").slideUp();
+    $(this).siblings().find("ul").find("li").removeClass("active");
+});
+
+$(".menu-btn").click(function (){
+    $(".left-panel").toggleClass("active");
+});
+</script>
 </html>
