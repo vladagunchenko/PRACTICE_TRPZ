@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel = "stylesheet" href="navigation_bar.css">
     <link rel = "stylesheet" href="navigation_top.css">
+    <link rel = "stylesheet" href="task_grid.css">
+
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
     <title>Тask management</title>
 </head>
 <body>
@@ -92,22 +96,38 @@
 
         <div class = "container-top">
             <div class = "menu-top-div">
-            <ul class = "menu-top-ul">
-                <li>
-                   <img src="img/calendar.png" class = "icon">
-                </li>
-                <li>
-                    <img src="img/clock.png"class = "icon">
-                </li>
-                <li>
-                   <img src="img/sort.png" class = "icon">
-                </li>
-                <li>
-                  <img src="img/delete.png" class = "icon">
-                </li>
-            </ul>
+                <ul class = "menu-top-ul">
+                    <li>
+                        <img src="img/calendar.png" class = "icon">
+                    </li>
+                    <li>
+                        <img src="img/clock.png"class = "icon">
+                    </li>
+                    <li>
+                        <img src="img/sort.png" class = "icon">
+                    </li>
+                </ul>
+                <div class = separator></div>
+                <ul class = "menu-top-ul">
+                    <li>
+                        <img src="img/delete.png" class = "icon">
+                    </li>
+                    <li onclick="addTaskCard()">
+                        <img src="img/add.png" class = "icon">
+                    </li>
+                </ul>
             </div>
         </div>
-         <script src="js_navigation_bar.js"></script>
+
+        <div class="task-grid-wrapper">
+            <div class="ears-row">
+                <div class="left-ear"></div>
+                <div class="right-ear"></div>
+            </div>
+            <div class = "task-grid-container"></div>
+        </div>
+
+        <script src="navigation_bar.js"></script>
+        <script src="task_grid.js"></script>
 </body>
 </html>

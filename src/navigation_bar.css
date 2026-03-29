@@ -16,6 +16,7 @@ body{
     color: white;
 }
 .left-panel{
+    z-index: 10;
     position: fixed;
     width: 240px;
     height: 100vh;
