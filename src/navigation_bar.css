@@ -24,9 +24,8 @@ body{
     background-color:#000; 
     padding: 24px;
     border-radius: 0px;
-    transition: all 0.3s;
-
 }
+
 .left-panel .head{
     display: flex;
     gap: 20px;
@@ -36,6 +35,8 @@ body{
 }
 
 .user-img{
+     min-width: 44px; 
+    min-height: 44px;
     width: 44px;
     height: 44px;
     border-radius: 50%;
@@ -197,14 +198,14 @@ body{
 .left-panel.active .menu ul li .arrow{
     display: none;
 }
-.left-panel.active .menu >ul > li > a{
-     position: relative;
+.left-panel.active .menu >ul > li> a {
+    position: relative;
     display: flex;
     align-items: center;
     justify-self: center;
 }
 
-.left-panel.active .menu >ul >li > a .text{
+.left-panel.active .menu  >ul >li> a .text{
     position: absolute;
     left:70px;
     top: 50%;
@@ -241,3 +242,35 @@ body{
 .icon-theme{
     filter: invert(1);
 }
+
+.moon-sun {
+    position: relative;
+    width: 100%;
+}
+
+.moon-sun a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 8px;
+    border-radius: 8px;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s;
+    width: 100%;
+}
+
+.moon-sun a:hover {
+    background-color: #1e1a1b;
+}
+
+
+.left-panel.active .moon-sun a {
+    justify-content: center;
+    padding: 12px;
+}
+
+.left-panel.active .moon-sun a .text {
+    display: none;
+}
+

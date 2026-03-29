@@ -43,6 +43,7 @@
                             </li>
                         </ul>
                         </li>
+                        </ul>
                     </div>
                         <div class ="menu">
                          <p class = "title">SETTING</p>
@@ -52,10 +53,17 @@
                                 <span class = "text">Setting</span>
                                 </a>
                             </li>
-                            <li class = "active">
-                                <a href="#"><img src="img/light-theme.png" class = "icon">
-                                <span class = "text">Theme</span>
-                                </a>
+                            <li class="mode">
+                                <div class="moon-sun">
+                                    <a href="#" id="dark">
+                                        <img src="img/dark-theme.png" class="icon">
+                                        <span class="text">Dark Mode</span>
+                                    </a>
+                                    <a href="#" id="light" style="display:none">
+                                        <img src="img/light-theme.png" class="icon">
+                                        <span class="text">Light Mode</span>
+                                    </a>
+                                </div>
                             </li>
                         </ul>
                 </div>
@@ -78,7 +86,6 @@
                         </div>
                 </div>
             </div>
-        </div>
         </div>
          <script src="js_navigation_bar.js"></script>
 </body>
