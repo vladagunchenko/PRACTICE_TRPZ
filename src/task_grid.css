@@ -56,12 +56,13 @@
     display: grid;
     min-height: calc(100vh - 90px);
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 12px;
+    grid-auto-rows: 250px;
+    gap: 20px;
     border-radius: 0 0 10px 10px; 
     margin-top: 0; 
 }
 
-.item {
+.task-card {
     padding: 2em;
     background-color: var(--grid-bg);
     color: black;
@@ -70,4 +71,10 @@
     border-color: var(--outline-color);
     border: 1px solid var(--outline-color);
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    animation: task-card-appear 0.4s ease-out forwards;
+}
+
+@keyframes task-card-appear{
+    0% { opacity: 0; transform: translateY(30px) scale(0.9); }
+    100% { opacity: 1; transform: translateY(0) scale (1); }
 }
