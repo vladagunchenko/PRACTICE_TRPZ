@@ -1,0 +1,9 @@
+.overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#editor-area {
+    color: black;
+}

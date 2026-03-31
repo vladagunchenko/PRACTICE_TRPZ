@@ -7,6 +7,7 @@
     <link rel = "stylesheet" href="css/navigation_bar.css">
     <link rel = "stylesheet" href="css/navigation_top.css">
     <link rel = "stylesheet" href="css/task_grid.css">
+    <link rel = "stylesheet" href="css/editor.css">
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
@@ -103,7 +104,7 @@
                     <li>
                         <img src="img/clock.png"class = "icon">
                     </li>
-                    <li>
+                    <li onclick="exportAllTasks()">
                         <img src="img/sort.png" class = "icon">
                     </li>
                 </ul>
@@ -132,7 +133,32 @@
             </div>
         </div>
 
+        <div id="editor-overlay" class="overlay none">
+            <div class="modal-content">
+                <div class="editor-toolbar">
+                    <button id="btn-bold"><b>B</b></button>
+                    <button id="btn-italic"><i>I</i></button>
+                    <button id="btn-underline"><u>U</u></button>
+                    <button id="btn-list">• List</button>
+                </div>
+
+                <input type="text" id="editor-title" placeholder="Task Title">
+                <div id="editor-area" contenteditable="true"></div>
+
+                <div class="modal-buttons">
+                    <button id="editor-cancel" onclick="TaskEditor.close()">Cancel</button>
+                    <button id="editor-save">Save Task</button>
+                </div>
+            </div>
+        </div>
+
+
+        <script src="js/task_store.js"></script>
+        <script src="js/editor/editor_engine.js"></script>
+        <script src="js/editor/md_parser.js"></script>
+        <script src="js/editor/task_render.js"></script>
         <script src="js/navigation_bar.js"></script>
         <script src="js/task_grid.js"></script>
+        <script src="js/task_edit.js"></script>
 </body>
 </html>
