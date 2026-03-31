@@ -69,11 +69,7 @@
     gap: 20px;
     border-radius: 0 0 10px 10px; 
     margin-top: 0;
-    scrollbar-width: none;
 }
-
-.task-grid-container::-webkit-scrollbar
-{ width: 0px; }
 
 .task-card {
     padding: 2em;
