@@ -9,7 +9,7 @@ const taskgrid = document.getElementById('task-grid');
             card.id = `task-${taskId++}`;
             card.setAttribute('data-task', '')
             card.innerHTML = `
-            <input id="datetime" type="datetime-local" class = "time-card" />
+            <input type="datetime-local" class = "time-card" />
             <input type="checkbox" class = "checkbox-card"/>
             <p class="text-title">Task name. Name name name nmae name name name</p>
             <p class="text-body">${textxz[index]}</p>
@@ -21,4 +21,13 @@ const taskgrid = document.getElementById('task-grid');
        index++;
     }
 
-    addTaskCard();
+    /*function taskEmptyText() {
+    const taskEmpty = document.querySelector('[data-task-empty]');
+    const taskItems = document.getElementById('task-grid').querySelectorAll('[data-task]');
+    
+    if (taskItems.length > 0) {
+        taskEmpty.classList.add('none');
+    } else {
+        taskEmpty.classList.remove('none');
+    }
+}*/
