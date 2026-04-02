@@ -14,7 +14,7 @@ function renderGrid()
     taskEmptyText();
 }
 
-const  editor_overlay = document.getElementById('editor-overlay');
+const editor_overlay = document.getElementById('editor-overlay');
 function addTaskCard() { 
         TaskEditor.open();
         editor_overlay.classList.add('active');
@@ -22,6 +22,17 @@ function addTaskCard() {
 function closeTaskCard(){
         editor_overlay.classList.remove('active');
 }
+
+const about_div = document.querySelector('.about_div');
+
+function addCardAbout() {
+    about_div.classList.add('active');
+}
+
+function closeAbout() {
+    about_div.classList.remove('active');
+}
+
 
 function taskEmptyText()
 {

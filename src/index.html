@@ -78,11 +78,12 @@
                         <div class ="menu">
                          <p class = "title" data-lang="accounttext">ACCOUNT</p>
                          <ul>
-                            <li>
-                                <a href="#"><img src="img/info.png" class = "icon">
-                                <span class = "text" data-lang="aboutuser">About</span>
-                                </a>
-                            </li>
+                            <li onclick="addCardAbout()">
+                                    <a href="#">
+                                        <img src="img/info.png" class="icon">
+                                        <span class="text">About</span>
+                                    </a>
+                                </li>
                             <li>
                                 <a href="#"><img src="img/exit.png" class = "icon">
                                 <span class = "text" data-lang="exituser">Exit</span>
@@ -90,28 +91,48 @@
                             </li>
                         </ul>
                         </div>
+                        <div class="about_div">
+                            <div class="about_f">
+                                <button onclick="closeAbout()">X</button>
+                            </div>
+                        </div>
+
                 </div>
             </div>
         </div>
+
+
 
 
         <div class = "container-top">
             <div class = "menu-top-div">
                 <ul class = "menu-top-ul">
                     <li>
+                        <a href = "#">
                         <img src="img/calendar.png" class = "icon">
+                         <span class = "text-top" data-lang="calendar">Calendar</span>
+                        </a>
                     </li>
                     <li>
+                        <a href = "#">
                         <img src="img/clock.png"class = "icon">
+                         <span class = "text-top" data-lang="today">Today</span>
+                        </a>
                     </li>
                     <li onclick="exportAllTasks()">
+                        <a href = "#">
                         <img src="img/sort.png" class = "icon">
+                         <span class = "text-top" data-lang="sorting">Sorting</span>
+                        </a>
                     </li>
                 </ul>
                 <div class = separator></div>
                 <ul class = "menu-top-ul" onclick="addTaskCard()">
                     <li >
+                        <a href = "#">
                         <img src="img/add.png" class = "icon" id = "open">
+                         <span class = "text-top" data-lang="addtask">Add a task</span>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -137,7 +158,7 @@
         <div id="editor-overlay" class="overlay none">
             <div class="modal-content">
                 <div class = "text-edit" data-lang="addtask">
-                    <p >Adding a task</p>
+                    <p >Add task</p>
                 </div>
 
                 <div class="editor-top">
@@ -150,7 +171,7 @@
                     <button id="btn-underline"><img src="img/underline.png" alt=" "></button>
                     <button id="btn-list"><img src="img/list.png" alt=" "></button>
                     <button id="btn-import"><img src="img/import.png" alt=" "></button>
-                    <button id="btn-export"><img src="img/export.png" alt=" " ></button>
+                    <button id="btn-export"><img src="img/export.png" alt=" " onclick="exportAllTasks()"></button>
                 </div>
                 
                 <div id="editor-area" contenteditable="true" data-lang-placeholder="enterdesc" data-placeholder="Enter description..."></div>
@@ -162,6 +183,11 @@
             </div>
         </div>
 
+        <div class ="container-about">
+            <div class = "modal-about">
+
+            </div>
+        </div>
 
         <script src="js/task_store.js"></script>
 

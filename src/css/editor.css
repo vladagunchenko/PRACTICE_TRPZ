@@ -147,3 +147,58 @@
 .modal-buttons button:hover {
     background:var(--hover-btn-card);
 }
+
+
+
+.container-about {
+    opacity: 0;
+    pointer-events: none;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    transition: all 0.3s;
+}
+.modal-about{
+    padding: 2em 2em 0.5em 2em;
+    border-radius: 10px;
+    background-color: var(--color-card);
+    height: 550px;
+    width:900px;
+    max-width: 100%;
+    
+}
+
+.about_div{
+    opacity: 0;
+    pointer-events: none;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    transition: all 0.3s;
+}
+.about_f{
+    padding: 2em 2em 0.5em 2em;
+    border-radius: 10px;
+    background-color: var(--color-card);
+    height: 550px;
+    width:900px;
+    max-width: 100%;
+    
+}
+
+.about_div.active {
+    opacity: 1;
+    pointer-events: all;
+}
