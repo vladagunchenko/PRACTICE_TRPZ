@@ -11,8 +11,12 @@ const TaskRenderer = (function()
 
         rawMeta.split('\n').forEach(line =>
         {
-            const parts = line.split(': ');
-            if (parts.length === 2) metadata[parts[0].trim()] = parts[1].trim();    
+            const index = line.indexOf(': ');
+            if (index !== -1) {
+                const key = line.substring(0, index).trim();
+                const value = line.substring(index + 2).trim();
+                metadata[key] = value;
+            }
         });
         
         return { metadata, content };
