@@ -22,6 +22,8 @@
     
 }
 .text-edit{
+    justify-content: space-between; 
+    display: flex;
     font-size: 26px;
     font-weight: bold;
     padding-bottom: 8px;
@@ -148,6 +150,22 @@
     background:var(--hover-btn-card);
 }
 
+#editor-mode-swap{
+    padding: 0;  
+    border: none;    
+    font-size: 18px;
+    background-color:var(--btn-card);
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight:700;
+    color: var(--text-btn-card);
+    width: 80px;
+    height: 35px;
+}
+#editor-mode-swap:hover {
+    background:var(--hover-btn-card);
+}
 
 
 .container-about {
