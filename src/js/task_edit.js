@@ -3,6 +3,8 @@ const TaskEditor = (function() {
     const titleInput = document.getElementById('editor-title');
     const contentArea = document.getElementById('editor-area');
     const timeInput = document.getElementById('editor-time');
+    const editorMode = document.getElementById('editor-mode');
+
     let currentId = null;
 
     const Converter =
@@ -61,10 +63,42 @@ const TaskEditor = (function() {
     document.getElementById('btn-italic').addEventListener('click', () => applyFormat('italic'));
     document.getElementById('btn-underline').addEventListener('click', () => applyFormat('underline'));
     document.getElementById('btn-list').addEventListener('click', () => applyFormat('insertUnorderedList'));
+    document.getElementById('btn-import').addEventListener('click', () => fileInput.click());
+    document.getElementById('btn-export').addEventListener('click', () =>
+    {
+        const title = titleInput.value.trim() || 'task';
+        const rawHTML = contentArea.innerHTML;
+        const mdContent = Converter.toMD(rawHTML);
+        const id = currentId || Date.now();
+        const dueDate = timeInput.value || '';
+
+        const md = 
+`---
+id: ${id}
+status: new
+dueDate: ${dueDate}
+---
+# ${title}
+${mdContent}`;
+
+        const safeName = title.replace(/[^a-zA-ZА-ЯҐЄІЇа-яґєії0-9 _-]/g, '').trim() || 'task';
+        const blob = new Blob([md], { type: 'text/markdown' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${safeName}.md`;
+        a.click();
+        URL.revokeObjectURL(url);
+    });
 
     function open(id = null, title = '', content = '', dueDate = '')
     {
+        
         currentId = id;
+        if (id === null) editorMode.setAttribute('data-lang', 'addtask');
+        else editorMode.setAttribute('data-lang', 'edittask');
+        applyLang(localStorage.getItem('lang') || 'ENG');
+        
         titleInput.value = title;
         timeInput.value = dueDate;
         contentArea.innerHTML = Converter.toHTML(content);
@@ -112,32 +146,7 @@ ${mdContent}`;
     
     document.getElementById('editor-save').addEventListener('click', save);
     document.getElementById('editor-cancel').addEventListener('click', close);
-    document.getElementById('btn-import').addEventListener('click', () => fileInput.click());
-    document.getElementById('btn-export').addEventListener('click', () => {
-        const title = titleInput.value.trim() || 'task';
-        const rawHTML = contentArea.innerHTML;
-        const mdContent = Converter.toMD(rawHTML);
-        const id = currentId || Date.now();
-        const dueDate = timeInput.value || '';
-
-        const md = 
-`---
-id: ${id}
-status: new
-dueDate: ${dueDate}
----
-# ${title}
-${mdContent}`;
-
-        const safeName = title.replace(/[^a-zA-ZА-ЯҐЄІЇа-яґєії0-9 _-]/g, '').trim() || 'task';
-        const blob = new Blob([md], { type: 'text/markdown' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${safeName}.md`;
-        a.click();
-        URL.revokeObjectURL(url);
-    });
+    
 
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
