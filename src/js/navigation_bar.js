@@ -14,7 +14,7 @@ const translations = {
             accounttext: "ACCOUNT",
             aboutuser: "About",
             exituser: "Exit",
-            addtask: "Adding a task",
+            addtask: "Add a task",
             tasktitle: "Task Title",       
             enterdesc: "Enter description...",
             savetask: "Save",
@@ -22,7 +22,12 @@ const translations = {
             archivetask:"Archive",
             edittask: "Edit",
             untitled: "Untitled Task",
-            nocontent: "No content"
+            nocontent: "No content",
+            calendar:"Calendar",
+            today: "Today",
+            sorting: "Sorting",
+            addatask: "Add a task"
+
         },
         UA:{
             nameuser:"Гість",
@@ -44,7 +49,11 @@ const translations = {
             archivetask:"Архівувати",
             edittask: "Редагувати",
             untitled: "Без назви",
-            nocontent: "Нічого немає"
+            nocontent: "Нічого немає",
+            calendar:"Календар",
+            today: "Сьогодні",
+            sorting: "Сортування",
+            addatask: "Додати завдання"
         }
 };
 
