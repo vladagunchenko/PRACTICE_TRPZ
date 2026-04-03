@@ -96,7 +96,7 @@ ${mdContent}`;
         
         currentId = id;
         if (id === null) editorMode.setAttribute('data-lang', 'addtask');
-        else editorMode.setAttribute('data-lang', 'edittask');
+        else editorMode.setAttribute('data-lang', 'edittask2');
         applyLang(localStorage.getItem('lang') || 'ENG');
         
         titleInput.value = title;
