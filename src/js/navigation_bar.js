@@ -26,7 +26,8 @@ const translations = {
             calendar:"Calendar",
             today: "Today",
             sorting: "Sorting",
-            addatask: "Add a task"
+            addatask: "Add a task",
+            edittask2:"Edit task"
 
         },
         UA:{
@@ -53,7 +54,8 @@ const translations = {
             calendar:"Календар",
             today: "Сьогодні",
             sorting: "Сортування",
-            addatask: "Додати завдання"
+            addatask: "Додати завдання",
+            edittask2:"Редагування завдання"
         }
 };
 
