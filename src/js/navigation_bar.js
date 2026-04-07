@@ -28,7 +28,8 @@ const translations = {
             sorting: "Sorting",
             addatask: "Add a task",
             edittask2:"Edit task",
-            viewtask:"View task"
+            viewtask:"View task",
+            hometext:"Home"
 
         },
         UA:{
@@ -57,7 +58,8 @@ const translations = {
             sorting: "Сортування",
             addatask: "Додати завдання",
             edittask2:"Редагування завдання",
-            viewtask:"Перегляд завдання"
+            viewtask:"Перегляд завдання",
+            hometext:"Головна"
         }
 };
 
