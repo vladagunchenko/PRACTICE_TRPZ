@@ -27,6 +27,7 @@ const TaskEditor = (function() {
 
     let currentId = null;
     let currentMode = EditorMode.EDITOR;
+    let currentStatus = 'new';
 
     const defaultState =
     {
@@ -173,9 +174,9 @@ const TaskEditor = (function() {
     rawInput.addEventListener('input', () => {
         rawPreview.innerHTML = Converter.toHTML(rawInput.value);
     });
-    document.getElementById('btn-bold').addEventListener('click', () => applyFormat('bold'));
-    document.getElementById('btn-italic').addEventListener('click', () => applyFormat('italic'));
-    document.getElementById('btn-underline').addEventListener('click', () => applyFormat('underline'));
+    document.getElementById('btn-bold').addEventListener('click', () => applyFormat('bold', '**', '**'));
+    document.getElementById('btn-italic').addEventListener('click', () => applyFormat('italic', '*', '*'));
+    document.getElementById('btn-underline').addEventListener('click', () => applyFormat('underline', '__', '__'));
     document.getElementById('btn-list').addEventListener('click', () => applyFormat('insertUnorderedList'));
     document.getElementById('btn-import').addEventListener('click', () => fileInput.click());
     document.getElementById('btn-export').addEventListener('click', () =>
@@ -186,10 +187,11 @@ const TaskEditor = (function() {
         const id = currentId || Date.now();
         const dueDate = timeInput.value || '';
         const taskColor = colorInput.value;
+        const taskStatus = currentStatus;
         const md = 
 `---
 id: ${id}
-status: new
+status: ${currentStatus}
 dueDate: ${dueDate}
 color: ${taskColor}
 ---
@@ -209,9 +211,10 @@ ${mdContent}`;
     function getCurrentMD()
     { return currentMode === EditorMode.RAW ? rawInput.value : Converter.toMD(visualArea.innerHTML); }
 
-    function open(id = null, title = '', content = '', dueDate = '', mode = EditorMode.EDITOR, color = '#7A6ED6')
+    function open(id = null, title = '', content = '', dueDate = '', mode = EditorMode.EDITOR, color = '#7A6ED6', status)
     {
         currentId = id;
+        currentStatus = status;
         colorInput.value = color;
         modalContent.style.setProperty('--task-color', color);
 
@@ -256,6 +259,7 @@ ${mdContent}`;
             visualArea.innerHTML = '';
             rawInput.value = '';
             rawPreview.innerHTML = '';
+            currentStatus = 'new';
             applyState(EditorMode.EDITOR);
         }, 300);
     }
@@ -274,7 +278,7 @@ ${mdContent}`;
         const newMd = 
 `---
 id: ${id}
-status: new
+status: ${currentStatus}
 dueDate: ${dueDate}
 color: ${taskColor}
 ---
@@ -315,6 +319,7 @@ ${mdContent}`;
                 const importedColor = parsed.metadata.color || '#7A6ED6';
                 colorInput.value = importedColor;
                 modalContent.style.setProperty('--task-color', importedColor);
+                currentStatus = parsed.metadata.status || 'new';
                 titleInput.value = lines[0] ? lines[0].replace('# ', '') : '';
                 timeInput.value = parsed.metadata.dueDate || '';
                 const body = lines.slice(1).join('\n');

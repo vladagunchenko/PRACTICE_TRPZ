@@ -53,7 +53,8 @@ function viewCard(id){
     const body = lines.slice(1).join('\n');
     const dueDate = parsed.metadata.dueDate || '';
     const taskColor = parsed.metadata.color || '#7A6ED6';
-    TaskEditor.open(id, title, body, dueDate, EditorMode.VIEW, taskColor);
+    const taskStatus = parsed.metadata.status || 'new';
+    TaskEditor.open(id, title, body, dueDate, EditorMode.VIEW, taskColor, taskStatus);
 }
 
 function taskEmptyText()
@@ -94,13 +95,28 @@ taskgrid.addEventListener('click', (event) =>
         const body = lines.slice(1).join('\n');
         const dueDate = parsed.metadata.dueDate || '';
         const taskColor = parsed.metadata.color || '#7A6ED6';
-        TaskEditor.open(id, title, body, dueDate, EditorMode.EDITOR, taskColor);
+        const taskStatus = parsed.metadata.status || 'new';
+        TaskEditor.open(id, title, body, dueDate, EditorMode.EDITOR, taskColor, taskStatus);
         return; 
     }
 
     if(event.target.classList.contains('checkbox-card')||
         event.target.classList.contains('time-card')){return;}
     viewCard(id);
+});
+
+taskgrid.addEventListener('change', (event) => {
+    if (event.target.classList.contains('checkbox-card')) {
+        const card = event.target.closest('.task-card');
+        const id = card.getAttribute('data-id');
+        const isChecked = event.target.checked;
+        const newStatus = isChecked ? 'completed' : 'new';
+        const allTasks = TaskStore.getAll();
+        const rawMarkdown = allTasks.find(t => t.includes(`id: ${id}`));
+        if (!rawMarkdown) return;
+        const newMd = rawMarkdown.replace(/^status:\s*.*$/m, `status: ${newStatus}`);
+        TaskStore.update(id, newMd);
+    }
 });
 
 renderGrid();

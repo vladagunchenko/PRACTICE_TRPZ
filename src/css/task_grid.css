@@ -209,7 +209,7 @@ input[type ="checkbox"]:checked::after {
 }
 
 .card-color-line {
-    background: linear-gradient(to bottom, var(--current-task-color), transparent);
+    background: var(--current-task-color);
     position: absolute;
     left: 12px;
     top: 35px;

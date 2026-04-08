@@ -195,21 +195,21 @@
      margin-top : auto;
      bottom: 0;
     display: flex;
+    gap: 15px;
+    padding-top: 20px;
     justify-content: space-between; 
 }
-.modal-buttons button{
-    padding: 0;  
-    border: none;    
-    font-size: 24px;
-    background-color:var(--btn-card);
-    border-radius: 15px;
+.modal-buttons button {
+    padding: 0 50px;
     border: none;
-    cursor: pointer;
-    font-weight:500;
+    font-size: 18px;
+    font-weight: 600;
+    background-color: var(--btn-card);
+    border-radius: 10px;
     color: var(--text-btn-card);
-    flex: 1;
-    max-width: 350px;
-    height: 50px;
+    height: 45px;
+    cursor: pointer;
+    transition: all 0.2s;
 }
 .modal-buttons button:hover {
     background:var(--hover-btn-card);
