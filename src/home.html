@@ -178,25 +178,29 @@
                 </div>
 
                 <div class="editor-top">
+                    <input type="color" id="btn-task-color" class="color-circle" value="#7A6ED6">
                     <input type="text" id="editor-title" data-lang-placeholder="tasktitle" placeholder="Task Title">
                     <input type="datetime-local" id="editor-time" class="time-card"/>
                 </div>
-
-                <div class="editor-workspace">
-                    <div class="editor-toolbar">
-                        <button id="btn-bold"><img src="img/bold.png" alt=" "></button>
-                        <button id="btn-italic"><img src="img/italic.png" alt=" "></button>
-                        <button id="btn-underline"><img src="img/underline.png" alt=" "></button>
-                        <button id="btn-list"><img src="img/list.png" alt=" "></button>
-                    </div>
-                
-                    <div id="edit-editor" contenteditable="true" data-lang-placeholder="enterdesc" data-placeholder="Enter description..."></div>
-                    <div id="edit-raw">
-                        <textarea id="raw-input" data-lang-placeholder="enterdesc" data-placeholder="Enter description..."></textarea>
-                        <div id="raw-preview"></div>
+                <div class="editor-workspace-wrapper">
+                    <!--div class="line-wrapper">
+                        <div class="color-gradient-line"></div>
+                    </div -->
+                    <div class="editor-workspace">
+                        <div class="editor-toolbar">
+                            <button id="btn-bold"><img src="img/bold.png" alt=" "></button>
+                            <button id="btn-italic"><img src="img/italic.png" alt=" "></button>
+                            <button id="btn-underline"><img src="img/underline.png" alt=" "></button>
+                            <button id="btn-list"><img src="img/list.png" alt=" "></button>
+                        </div>
+                    
+                        <div id="edit-editor" contenteditable="true" data-lang-placeholder="enterdesc" data-placeholder="Enter description..."></div>
+                        <div id="edit-raw">
+                            <textarea id="raw-input" data-lang-placeholder="enterdesc" data-placeholder="Enter description..."></textarea>
+                            <div id="raw-preview"></div>
+                        </div>
                     </div>
                 </div>
-
                 <div class="modal-buttons">
                     <button id="editor-cancel" data-lang="canceltask" onclick="closeTaskCard()" >Cancel</button>
                     <button id="editor-save" data-lang="savetask">Save Task</button>

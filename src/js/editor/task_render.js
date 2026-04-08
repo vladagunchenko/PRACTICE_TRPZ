@@ -26,7 +26,7 @@ const TaskRenderer = (function()
     {
         const parsed = parseFrontmatter(mdString);
         const lines = parsed.content.split('\n');
-
+        const taskColor = parsed.metadata.color || '#7A6ED6';
         const title = lines[0] ? lines[0].replace('# ', '') : 'Task name';
         let description = lines.slice(1);
         let formattedDescription = description.map(line =>
@@ -48,11 +48,19 @@ const TaskRenderer = (function()
         const card = document.createElement('div');
         card.className = 'task-card';
         card.id = `task-${parsed.metadata.id}`;
+        card.style.setProperty('--current-task-color', taskColor);
         card.setAttribute('data-task', '');
         card.setAttribute('data-id', parsed.metadata.id);
+        card.style.setProperty('--current-task-color', taskColor);
         
         card.innerHTML = `
-           <input type="datetime-local" class="time-card" value="${dueDate}" onclick="viewCard('${parsed.metadata.id}')" readonly />
+            <div class="card-color-line"></div>
+
+            <div class="time-badge-wrapper">
+                <div class="task-dot"></div>
+                <input type="datetime-local" class="time-card" value="${dueDate}" onclick="viewCard('${parsed.metadata.id}')" readonly />
+            </div>
+            
             <input type="checkbox" class="checkbox-card" ${isChecked} />
             <p class="text-title" data-lang="titletask">${title}</p>
             <p class="text-body" data-lang="bodytask">${formattedDescription}</p>

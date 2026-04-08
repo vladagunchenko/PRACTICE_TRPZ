@@ -15,11 +15,15 @@ const TaskEditor = (function() {
     const toolbar = document.querySelector('.editor-toolbar');
     const btnSwapMode = document.getElementById('editor-mode-swap');
     const modalButtons = document.querySelector('.modal-buttons');
+    const importButton = document.getElementById('btn-import');
     
     const visualArea = document.getElementById('edit-editor');
     const rawArea = document.getElementById('edit-raw');
     const rawInput = document.getElementById('raw-input');
     const rawPreview = document.getElementById('raw-preview');
+
+    const colorInput = document.getElementById('btn-task-color');
+    const modalContent = document.querySelector('.modal-content');
 
     let currentId = null;
     let currentMode = EditorMode.EDITOR;
@@ -33,7 +37,8 @@ const TaskEditor = (function() {
         showVisualArea: 'block',
         showRawArea: 'none',
         contentEditable: 'true',
-        workspaceBorder: ''
+        workspaceBorder: '',
+        importButton: ''
     };
 
     const editorStateProperties =
@@ -52,7 +57,7 @@ const TaskEditor = (function() {
             showSwapBtn: 'none',
             showModalButtons: 'none',
             contentEditable: 'false',
-            workspaceBorder: 'none'
+            importButton: 'none'
         }
     };
 
@@ -71,6 +76,7 @@ const TaskEditor = (function() {
         visualArea.style.display = conf.showVisualArea;
         rawArea.style.display = conf.showRawArea;
         workspace.style.border = conf.workspaceBorder;
+        importButton.style.display = conf.importButton;
     }
 
     const Converter =
@@ -146,6 +152,9 @@ const TaskEditor = (function() {
         }
     }
     
+    colorInput.addEventListener('input', (e) =>
+    { modalContent.style.setProperty('--task-color', e.target.value); });
+
     btnSwapMode.addEventListener('click', () =>
     {
         if (currentMode === EditorMode.EDITOR)
@@ -161,6 +170,9 @@ const TaskEditor = (function() {
             applyState(EditorMode.EDITOR);
         }
     });
+    rawInput.addEventListener('input', () => {
+        rawPreview.innerHTML = Converter.toHTML(rawInput.value);
+    });
     document.getElementById('btn-bold').addEventListener('click', () => applyFormat('bold'));
     document.getElementById('btn-italic').addEventListener('click', () => applyFormat('italic'));
     document.getElementById('btn-underline').addEventListener('click', () => applyFormat('underline'));
@@ -173,12 +185,13 @@ const TaskEditor = (function() {
         const mdContent = getCurrentMD();
         const id = currentId || Date.now();
         const dueDate = timeInput.value || '';
-
+        const taskColor = colorInput.value;
         const md = 
 `---
 id: ${id}
 status: new
 dueDate: ${dueDate}
+color: ${taskColor}
 ---
 # ${title}
 ${mdContent}`;
@@ -196,11 +209,21 @@ ${mdContent}`;
     function getCurrentMD()
     { return currentMode === EditorMode.RAW ? rawInput.value : Converter.toMD(visualArea.innerHTML); }
 
-    function open(id = null, title = '', content = '', dueDate = '', mode = EditorMode.EDITOR)
+    function open(id = null, title = '', content = '', dueDate = '', mode = EditorMode.EDITOR, color = '#7A6ED6')
     {
         currentId = id;
+        colorInput.value = color;
+        modalContent.style.setProperty('--task-color', color);
+
         if (mode === EditorMode.VIEW) modeName.setAttribute('data-lang', 'viewtask');
-        else if (id === null) modeName.setAttribute('data-lang', 'addtask');
+        else if (id === null)
+        {
+            const now = new Date();
+            const offset = now.getTimezoneOffset() * 60000;
+
+            dueDate = new Date(now - offset).toISOString().slice(0, 16);
+            modeName.setAttribute('data-lang', 'addtask');
+        }
         else modeName.setAttribute('data-lang', 'edittask2');
         
         applyLang(localStorage.getItem('lang') || 'ENG');
@@ -243,7 +266,7 @@ ${mdContent}`;
         const title = titleInput.value.trim() || translations[savedLang].untitled;
         const rawHTML = visualArea.innerHTML;
         const mdContent = getCurrentMD() || translations[savedLang].nocontent;
-
+        const taskColor = colorInput.value;
         const id = currentId || Date.now();
         const now = new Date();
         const dueDate = timeInput.value || new Date(now - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
@@ -253,6 +276,7 @@ ${mdContent}`;
 id: ${id}
 status: new
 dueDate: ${dueDate}
+color: ${taskColor}
 ---
 # ${title}
 ${mdContent}`;
@@ -288,11 +312,18 @@ ${mdContent}`;
             {
                 const parsed = TaskRenderer.parseFrontmatter(importedMd);
                 const lines = parsed.content.split('\n');
-                
+                const importedColor = parsed.metadata.color || '#7A6ED6';
+                colorInput.value = importedColor;
+                modalContent.style.setProperty('--task-color', importedColor);
                 titleInput.value = lines[0] ? lines[0].replace('# ', '') : '';
                 timeInput.value = parsed.metadata.dueDate || '';
                 const body = lines.slice(1).join('\n');
                 visualArea.innerHTML = Converter.toHTML(body);
+                if (currentMode === EditorMode.RAW)
+                {
+                    rawInput.value = body;
+                    rawPreview.innerHTML = Converter.toHTML(body);
+                }
             }
         };
         reader.readAsText(file);

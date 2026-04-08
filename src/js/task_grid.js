@@ -52,17 +52,8 @@ function viewCard(id){
     const title = lines[0] ? lines[0].replace('# ', '') : '';
     const body = lines.slice(1).join('\n');
     const dueDate = parsed.metadata.dueDate || '';
-    
-    TaskEditor.open(id, title, body, dueDate, EditorMode.VIEW);
-}
-
-const about_div = document.querySelector('.about_div');
-
-function addCardAbout() {
-    about_div.classList.add('active');
-}
-function closeAbout() {
-    about_div.classList.remove('active');
+    const taskColor = parsed.metadata.color || '#7A6ED6';
+    TaskEditor.open(id, title, body, dueDate, EditorMode.VIEW, taskColor);
 }
 
 function taskEmptyText()
@@ -102,8 +93,8 @@ taskgrid.addEventListener('click', (event) =>
         const title = lines[0] ? lines[0].replace('# ', '') : '';
         const body = lines.slice(1).join('\n');
         const dueDate = parsed.metadata.dueDate || '';
-        
-        TaskEditor.open(id, title, body, dueDate, EditorMode.EDITOR);
+        const taskColor = parsed.metadata.color || '#7A6ED6';
+        TaskEditor.open(id, title, body, dueDate, EditorMode.EDITOR, taskColor);
         return; 
     }
 
