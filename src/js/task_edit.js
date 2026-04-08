@@ -161,6 +161,9 @@ const TaskEditor = (function() {
             applyState(EditorMode.EDITOR);
         }
     });
+    rawInput.addEventListener('input', () => {
+        rawPreview.innerHTML = Converter.toHTML(rawInput.value);
+    });
     document.getElementById('btn-bold').addEventListener('click', () => applyFormat('bold'));
     document.getElementById('btn-italic').addEventListener('click', () => applyFormat('italic'));
     document.getElementById('btn-underline').addEventListener('click', () => applyFormat('underline'));
