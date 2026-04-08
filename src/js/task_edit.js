@@ -1,11 +1,77 @@
+const EditorMode =
+{
+    EDITOR: 'editEditor',
+    RAW: 'editRaw',
+    VIEW: 'editView'
+};
+
 const TaskEditor = (function() {
     const overlay = document.getElementById('editor-overlay');
     const titleInput = document.getElementById('editor-title');
-    const contentArea = document.getElementById('editor-area');
     const timeInput = document.getElementById('editor-time');
-    const editorMode = document.getElementById('editor-mode');
+    const modeName = document.getElementById('editor-mode');
+    
+    const workspace = document.querySelector('.editor-workspace');
+    const toolbar = document.querySelector('.editor-toolbar');
+    const btnSwapMode = document.getElementById('editor-mode-swap');
+    const modalButtons = document.querySelector('.modal-buttons');
+    
+    const visualArea = document.getElementById('edit-editor');
+    const rawArea = document.getElementById('edit-raw');
+    const rawInput = document.getElementById('raw-input');
+    const rawPreview = document.getElementById('raw-preview');
 
     let currentId = null;
+    let currentMode = EditorMode.EDITOR;
+
+    const defaultState =
+    {
+        inputsPointerEvents: 'auto',
+        showToolbar: 'flex',
+        showSwapBtn: 'block',
+        showModalButtons: 'flex',
+        showVisualArea: 'block',
+        showRawArea: 'none',
+        contentEditable: 'true',
+        workspaceBorder: ''
+    };
+
+    const editorStateProperties =
+    {
+        [EditorMode.EDITOR]: {},
+        [EditorMode.RAW]:
+        {
+            showVisualArea: 'none',
+            showRawArea: 'flex',
+            contentEditable: 'false'
+        },
+        [EditorMode.VIEW]:
+        {
+            inputsPointerEvents: 'none',
+            showToolbar: 'none',
+            showSwapBtn: 'none',
+            showModalButtons: 'none',
+            contentEditable: 'false',
+            workspaceBorder: 'none'
+        }
+    };
+
+    function applyState(mode)
+    {
+        currentMode = mode;
+
+        const conf = { ...defaultState, ...editorStateProperties[mode] };
+
+        titleInput.style.pointerEvents = conf.inputsPointerEvents;
+        timeInput.style.pointerEvents = conf.inputsPointerEvents;
+        toolbar.style.display = conf.showToolbar;
+        btnSwapMode.style.display = conf.showSwapBtn;
+        modalButtons.style.display = conf.showModalButtons;
+        visualArea.setAttribute('contenteditable', conf.contentEditable);
+        visualArea.style.display = conf.showVisualArea;
+        rawArea.style.display = conf.showRawArea;
+        workspace.style.border = conf.workspaceBorder;
+    }
 
     const Converter =
     {
@@ -53,12 +119,48 @@ const TaskEditor = (function() {
         }
     };
 
-    function applyFormat(command)
+    function applyFormat(command, rawOpen = '', rawClose = '')
     {
-        document.execCommand(command, false, null);
-        contentArea.focus();
-    }
+        if (currentMode === EditorMode.RAW)
+        {
+            const start = rawInput.selectionStart;
+            const end = rawInput.selectionEnd;
+            const text = rawInput.value;
+            const selectedText = text.substring(start, end);
+            
+            let replacement = '';
+            if (command === 'insertUnorderedList') replacement = selectedText ? selectedText.split('\n').map(l => '- ' + l).join('\n') : '- ';
+            else replacement = rawOpen + selectedText + rawClose;
 
+            rawInput.value = text.substring(0, start) + replacement + text.substring(end);
+            rawInput.focus();
+            rawInput.selectionStart = start + rawOpen.length;
+            rawInput.selectionEnd = end + rawOpen.length + (command === 'insertUnorderedList' ? 0 : selectedText.length);
+            
+            rawPreview.innerHTML = Converter.toHTML(rawInput.value);
+        }
+        else
+        {
+            document.execCommand(command, false, null);
+            visualArea.focus();
+        }
+    }
+    
+    btnSwapMode.addEventListener('click', () =>
+    {
+        if (currentMode === EditorMode.EDITOR)
+        {
+            const currentMD = Converter.toMD(visualArea.innerHTML);
+            rawInput.value = currentMD;
+            rawPreview.innerHTML = Converter.toHTML(currentMD);
+            applyState(EditorMode.RAW);
+        }
+        else if (currentMode === EditorMode.RAW)
+        {
+            visualArea.innerHTML = Converter.toHTML(rawInput.value);
+            applyState(EditorMode.EDITOR);
+        }
+    });
     document.getElementById('btn-bold').addEventListener('click', () => applyFormat('bold'));
     document.getElementById('btn-italic').addEventListener('click', () => applyFormat('italic'));
     document.getElementById('btn-underline').addEventListener('click', () => applyFormat('underline'));
@@ -67,8 +169,8 @@ const TaskEditor = (function() {
     document.getElementById('btn-export').addEventListener('click', () =>
     {
         const title = titleInput.value.trim() || 'task';
-        const rawHTML = contentArea.innerHTML;
-        const mdContent = Converter.toMD(rawHTML);
+        const rawHTML = visualArea.innerHTML;
+        const mdContent = getCurrentMD();
         const id = currentId || Date.now();
         const dueDate = timeInput.value || '';
 
@@ -91,17 +193,29 @@ ${mdContent}`;
         URL.revokeObjectURL(url);
     });
 
-    function open(id = null, title = '', content = '', dueDate = '')
+    function getCurrentMD()
+    { return currentMode === EditorMode.RAW ? rawInput.value : Converter.toMD(visualArea.innerHTML); }
+
+    function open(id = null, title = '', content = '', dueDate = '', mode = EditorMode.EDITOR)
     {
-        
         currentId = id;
-        if (id === null) editorMode.setAttribute('data-lang', 'addtask');
-        else editorMode.setAttribute('data-lang', 'edittask2');
+        if (mode === EditorMode.VIEW) modeName.setAttribute('data-lang', 'viewtask');
+        else if (id === null) modeName.setAttribute('data-lang', 'addtask');
+        else modeName.setAttribute('data-lang', 'edittask2');
+        
         applyLang(localStorage.getItem('lang') || 'ENG');
         
         titleInput.value = title;
         timeInput.value = dueDate;
-        contentArea.innerHTML = Converter.toHTML(content);
+
+        visualArea.innerHTML = Converter.toHTML(content);
+        if (mode === EditorMode.RAW)
+        {
+            rawInput.value = content;
+            rawPreview.innerHTML = Converter.toHTML(content);
+        }
+
+        applyState(mode);
         
         overlay.classList.remove('none');
         overlay.classList.add('active');
@@ -109,21 +223,26 @@ ${mdContent}`;
 
     function close()
     {
-        overlay.classList.add('none');
         overlay.classList.remove('active');
-        currentId = null;
-        titleInput.value = '';
-        timeInput.value = ''; 
-        contentArea.innerHTML = '';
-
+        setTimeout(() =>
+        {
+            overlay.classList.add('none');
+            currentId = null;
+            titleInput.value = '';
+            timeInput.value = ''; 
+            visualArea.innerHTML = '';
+            rawInput.value = '';
+            rawPreview.innerHTML = '';
+            applyState(EditorMode.EDITOR);
+        }, 300);
     }
 
     function save()
     {
         const savedLang = localStorage.getItem('lang') || 'ENG';
         const title = titleInput.value.trim() || translations[savedLang].untitled;
-        const rawHTML = contentArea.innerHTML;
-        const mdContent = Converter.toMD(rawHTML) || translations[savedLang].nocontent;
+        const rawHTML = visualArea.innerHTML;
+        const mdContent = getCurrentMD() || translations[savedLang].nocontent;
 
         const id = currentId || Date.now();
         const now = new Date();
@@ -173,7 +292,7 @@ ${mdContent}`;
                 titleInput.value = lines[0] ? lines[0].replace('# ', '') : '';
                 timeInput.value = parsed.metadata.dueDate || '';
                 const body = lines.slice(1).join('\n');
-                contentArea.innerHTML = Converter.toHTML(body);
+                visualArea.innerHTML = Converter.toHTML(body);
             }
         };
         reader.readAsText(file);

@@ -37,30 +37,12 @@ function renderTodayGrid()
 todayTask = true;
 }
 
+function addTaskCard()
+{ TaskEditor.open(null, '', '', '', EditorMode.EDITOR); }
 
-const editor_overlay = document.getElementById('editor-overlay');
-function addTaskCard() { 
-        TaskEditor.open();
-        editor_overlay.classList.add('active');
- }
-function closeTaskCard(){
-        editor_overlay.classList.remove('active');
-}
+document.querySelector('.overlay').addEventListener('click', (event) =>
+{ if (event.target === event.currentTarget) TaskEditor.close(); });
 
-document.querySelector('.overlay').addEventListener('click', (event) => {
-    if (event.target !== event.currentTarget) return;
-    document.querySelector('.modal-buttons').style.display = 'none';
-    document.querySelector('#editor-title').style.pointerEvents = '';
-    document.querySelector('#editor-time').style.pointerEvents = '';
-    const area = document.querySelector('#editor-area');
-    area.setAttribute('contenteditable', 'true');
-    area.style.userSelect = '';
-    area.style.cursor = '';
-    closeTaskCard();
-     setTimeout(() => {
-        document.querySelector('.modal-buttons').style.display = '';
-    }, 300);
-});
 function viewCard(id){
     const allTasks = TaskStore.getAll();
     const rawMarkdown = allTasks.find(t => t.includes(`id: ${id}`));
@@ -70,17 +52,8 @@ function viewCard(id){
     const title = lines[0] ? lines[0].replace('# ', '') : '';
     const body = lines.slice(1).join('\n');
     const dueDate = parsed.metadata.dueDate || '';
-    TaskEditor.open(id, title, body, dueDate); 
-    editor_overlay.classList.add('active');
-    document.querySelector('#editor-mode').setAttribute('data-lang', 'viewtask');
-    applyLang(localStorage.getItem('lang') || 'ENG');
-    document.querySelector('#editor-title').style.pointerEvents = 'none';
-    document.querySelector('#editor-time').style.pointerEvents = 'none';
-    const area = document.querySelector('#editor-area');
-    area.setAttribute('contenteditable', 'false');
-    area.style.userSelect = 'none';
-    area.style.cursor = 'default';
-    document.querySelector('.modal-buttons').style.display = 'none';
+    
+    TaskEditor.open(id, title, body, dueDate, EditorMode.VIEW);
 }
 
 const about_div = document.querySelector('.about_div');
@@ -119,20 +92,18 @@ taskgrid.addEventListener('click', (event) =>
 
     if (event.target.classList.contains('btn-edit'))
     {
+        const card = event.target.closest('.task-card');
+        const id = card.getAttribute('data-id');
+        const allTasks = TaskStore.getAll();
+        const rawMarkdown = allTasks.find(t => t.includes(`id: ${id}`));
+        if (!rawMarkdown) return;
+        const parsed = TaskRenderer.parseFrontmatter(rawMarkdown);
+        const lines = parsed.content.split('\n');
+        const title = lines[0] ? lines[0].replace('# ', '') : '';
+        const body = lines.slice(1).join('\n');
+        const dueDate = parsed.metadata.dueDate || '';
         
-    const card = event.target.closest('.task-card');
-    const id = card.getAttribute('data-id');
-    const allTasks = TaskStore.getAll();
-    const rawMarkdown = allTasks.find(t => t.includes(`id: ${id}`));
-    if (!rawMarkdown) return;
-    const parsed = TaskRenderer.parseFrontmatter(rawMarkdown);
-    const lines = parsed.content.split('\n');
-    const title = lines[0] ? lines[0].replace('# ', '') : '';
-    const body = lines.slice(1).join('\n');
-    const dueDate = parsed.metadata.dueDate || '';
-    
-    TaskEditor.open(id, title, body, dueDate); 
-    editor_overlay.classList.add('active');
+        TaskEditor.open(id, title, body, dueDate, EditorMode.EDITOR);
         return; 
     }
 

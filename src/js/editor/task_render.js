@@ -32,9 +32,14 @@ const TaskRenderer = (function()
         let formattedDescription = description.map(line =>
         {
             let cleanLine = line.trim();
-            if (cleanLine.startsWith('- ')) cleanLine = '• ' + cleanLine.substring(2);
+            if (cleanLine.startsWith('- ')) cleanLine = '&nbsp;&nbsp;• ' + cleanLine.substring(2);
+            
+            cleanLine = cleanLine.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+            cleanLine = cleanLine.replace(/__(.*?)__/g, '<u>$1</u>');
+            cleanLine = cleanLine.replace(/\*(.*?)\*/g, '<i>$1</i>');
+            cleanLine = cleanLine.replace(/~~(.*?)~~/g, '<del>$1</del>');
 
-            return cleanLine.replaceAll('**', '').replaceAll('__', '').replaceAll('~~', '').replaceAll('*', '');
+            return cleanLine;
         }).join('<br>');
 
         const isChecked = parsed.metadata.status === 'completed' ? 'checked' : '';
