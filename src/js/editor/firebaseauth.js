@@ -21,7 +21,10 @@ submit_r.addEventListener("click", function(event){
   const username = document.getElementById('user-register').value;
   const email = document.getElementById('email-register').value;
   const password = document.getElementById('password-register').value;
-
+  if (username === '') {
+        alert("Enter a username");
+        return;
+    }
   createUserWithEmailAndPassword( auth, email, password)
   .then((userCredential) => {
     const user = userCredential.user;
