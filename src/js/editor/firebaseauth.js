@@ -19,16 +19,17 @@ const auth = getAuth(app);
 submit_r.addEventListener("click", function(event){
   event.preventDefault();
   const username = document.getElementById('user-register').value;
-  const email = document.getElementById('email-register').value;
-  const password = document.getElementById('password-register').value;
+  const email_r = document.getElementById('email-register').value;
+  const password_r = document.getElementById('password-register').value;
   if (username === '') {
         alert("Enter a username");
         return;
     }
-  createUserWithEmailAndPassword( auth, email, password)
+  createUserWithEmailAndPassword( auth, email_r, password_r)
   .then((userCredential) => {
     const user = userCredential.user;
     localStorage.setItem('username', username);
+    localStorage.setItem('email_r', email_r);
     alert("The account was created");
     document.querySelector('.wrapper').classList.remove('active');
 
