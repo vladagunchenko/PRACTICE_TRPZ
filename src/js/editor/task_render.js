@@ -48,6 +48,7 @@ const TaskRenderer = (function()
         const card = document.createElement('div');
         card.className = 'task-card';
         card.id = `task-${parsed.metadata.id}`;
+        card.style.viewTransitionName = `taskcard-${parsed.metadata.id}`;
         card.style.setProperty('--current-task-color', taskColor);
         card.setAttribute('data-task', '');
         card.setAttribute('data-id', parsed.metadata.id);

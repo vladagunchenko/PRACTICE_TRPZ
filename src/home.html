@@ -36,12 +36,18 @@
                         <span class = "text" data-lang="hometext">Home</span>
                         </a>
                         </li>
-                        <li class = "active">
+                        <li class = "archive">
                         <a href="#"><img src="img/archive.png" class = "icon">
                         <span class = "text" data-lang="archivetext">Archive</span>
                         </a>
                         </li>
-                        <li class = "lang-menu">
+
+                        </ul>
+                    </div>
+                        <div class ="menu">
+                         <p class = "title" data-lang="settingtext">SETTING</p>
+                         <ul>
+                            <li class = "lang-menu">
                         <a href="#" class = "selected-lang" id="current-lang">
                             <img src="img/usa_flag.png" class = "icon-flag">ENG
                         </a> 
@@ -54,11 +60,6 @@
                             </li>
                         </ul>
                         </li>
-                        </ul>
-                    </div>
-                        <div class ="menu">
-                         <p class = "title" data-lang="settingtext">SETTING</p>
-                         <ul>
                             <!--<li class = "active">
                                 <a href="#"><img src="img/setting.png" class = "icon">
                                 <span class = "text" data-lang="settinguser">Setting</span>
@@ -128,7 +129,7 @@
                          <span class = "text-top" data-lang="today">Today</span>
                         </a>
                     </li>
-                    <li onclick="exportAllTasks()">
+                    <li onclick="sortGrid()">
                         <a href = "#">
                         <img src="img/sort.png" class = "icon">
                          <span class = "text-top" data-lang="sorting">Sorting</span>

@@ -1,16 +1,43 @@
 const taskgrid = document.getElementById('task-grid');
 
-function renderGrid()
+function sortGrid()
+{
+    if (document.startViewTransition) document.startViewTransition(() => renderGrid());
+    else renderGrid();
+}
+
+function renderGrid(freshCardID = null)
 {
     taskgrid.innerHTML = '';
-    const allTasks = TaskStore.getAll(); 
-    allTasks.forEach(mdString =>
+    const allTasks = TaskStore.getAll();
+
+    const parsedTasks = allTasks.map(mdString =>
+    ({
+        raw: mdString,
+        meta: TaskRenderer.parseFrontmatter(mdString).metadata
+    }));
+
+    parsedTasks.sort((a, b) =>
     {
-        const card = TaskRenderer.renderCard(mdString);
+        const completedA = a.meta.status === 'completed';
+        const completedB = b.meta.status === 'completed';
+
+        if (completedA !== completedB) return completedA ? 1 : -1;
+
+        const dateA = a.meta.dueDate ? new Date(a.meta.dueDate).getTime() : Number(a.meta.id);
+        const dateB = b.meta.dueDate ? new Date(b.meta.dueDate).getTime() : Number(b.meta.id);
+
+        return dateB - dateA;
+    });
+
+    parsedTasks.forEach(taskObj =>
+    {
+        const card = TaskRenderer.renderCard(taskObj.raw);
+        if (card.getAttribute('data-id') === String(freshCardID)) card.classList.add('animate-in');
         taskgrid.appendChild(card);
     });
     
-     applyLang(localStorage.getItem('lang') || 'ENG');
+    applyLang(localStorage.getItem('lang') || 'ENG');
     taskEmptyText();
 }
 
@@ -43,7 +70,8 @@ function addTaskCard()
 document.querySelector('.overlay').addEventListener('click', (event) =>
 { if (event.target === event.currentTarget) TaskEditor.close(); });
 
-function viewCard(id){
+function openTaskCard(id, mode)
+{
     const allTasks = TaskStore.getAll();
     const rawMarkdown = allTasks.find(t => t.includes(`id: ${id}`));
     if (!rawMarkdown) return;
@@ -53,8 +81,12 @@ function viewCard(id){
     const body = lines.slice(1).join('\n');
     const dueDate = parsed.metadata.dueDate || '';
     const taskColor = parsed.metadata.color || '#7A6ED6';
-    TaskEditor.open(id, title, body, dueDate, EditorMode.VIEW, taskColor);
+    const taskStatus = parsed.metadata.status || 'new';
+    TaskEditor.open(id, title, body, dueDate, mode, taskColor, taskStatus);
 }
+
+function viewCard(id)
+{ openTaskCard(id, EditorMode.VIEW); }
 
 function taskEmptyText()
 {
@@ -75,32 +107,56 @@ taskgrid.addEventListener('click', (event) =>
 
     if (event.target.classList.contains('btn-delete'))
     {
-        TaskStore.remove(id);
-        card.remove();
-        taskEmptyText();
+        card.classList.add('animate-out');
+
+        setTimeout(() =>
+        {
+            TaskStore.remove(id);
+            if (document.startViewTransition)
+            {
+                document.startViewTransition(() =>
+                {
+                    card.remove();
+                    taskEmptyText();
+                });
+            }
+            else
+            {
+                card.remove();
+                taskEmptyText();
+            }
+        }, 300);
+        
         return;
     }
 
     if (event.target.classList.contains('btn-edit'))
     {
-        const card = event.target.closest('.task-card');
-        const id = card.getAttribute('data-id');
-        const allTasks = TaskStore.getAll();
-        const rawMarkdown = allTasks.find(t => t.includes(`id: ${id}`));
-        if (!rawMarkdown) return;
-        const parsed = TaskRenderer.parseFrontmatter(rawMarkdown);
-        const lines = parsed.content.split('\n');
-        const title = lines[0] ? lines[0].replace('# ', '') : '';
-        const body = lines.slice(1).join('\n');
-        const dueDate = parsed.metadata.dueDate || '';
-        const taskColor = parsed.metadata.color || '#7A6ED6';
-        TaskEditor.open(id, title, body, dueDate, EditorMode.EDITOR, taskColor);
-        return; 
+        openTaskCard(id, EditorMode.EDITOR);
+        return;
     }
 
     if(event.target.classList.contains('checkbox-card')||
         event.target.classList.contains('time-card')){return;}
     viewCard(id);
+});
+
+taskgrid.addEventListener('change', (event) => {
+    if (event.target.classList.contains('checkbox-card')) {
+        const card = event.target.closest('.task-card');
+        const id = card.getAttribute('data-id');
+        const isChecked = event.target.checked;
+        const newStatus = isChecked ? 'completed' : 'new';
+        const allTasks = TaskStore.getAll();
+        const rawMarkdown = allTasks.find(t => t.includes(`id: ${id}`));
+        if (!rawMarkdown) return;
+
+        let newMd;
+        if (/^status:/m.test(rawMarkdown)) newMd = rawMarkdown.replace(/^status:.*$/m, `status: ${newStatus}`);
+        else newMd = rawMarkdown.replace(/^---\n/, `---\nstatus: ${newStatus}\n`);
+        
+        TaskStore.update(id, newMd);
+    }
 });
 
 renderGrid();
