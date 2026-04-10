@@ -7,11 +7,19 @@ const GridViewMode =
     ARCHIVE: 'archive'
 };
 
-let curGridViewMode;
+let curGridViewMode = GridViewMode.ALL_CARDS;
+let previousBaseMode = GridViewMode.ALL_CARDS;
 
 function setGridViewMode(mode)
 {
-    curGridViewMode = mode;
+    if ((mode === GridViewMode.TODAY || mode === GridViewMode.DONE) && curGridViewMode === mode) curGridViewMode = previousBaseMode; 
+    else
+    {
+        if (curGridViewMode === GridViewMode.ALL_CARDS || curGridViewMode === GridViewMode.ALL_CALENDAR) previousBaseMode = curGridViewMode;
+        if (curGridViewMode === GridViewMode.ARCHIVE && (mode === GridViewMode.TODAY || mode === GridViewMode.DONE)) previousBaseMode = GridViewMode.ALL_CARDS;
+
+        curGridViewMode = mode;
+    }
     sortGrid();
 }
 
@@ -26,13 +34,49 @@ function sortGrid()
 function renderGrid(freshCardID = null)
 {
     taskgrid.innerHTML = '';
+
+    if (curGridViewMode === GridViewMode.ALL_CALENDAR)
+    {
+        taskgrid.innerHTML = `календарне подання`;
+        taskEmptyText()
+        return;
+    }
+        
     const allTasks = TaskStore.getAll();
 
-    const parsedTasks = allTasks.map(mdString =>
+    let parsedTasks = allTasks.map(mdString =>
     ({
         raw: mdString,
         meta: TaskRenderer.parseFrontmatter(mdString).metadata
     }));
+
+    const offset = new Date().getTimezoneOffset() * 60000;
+    const localTodayStr = new Date(Date.now() - offset).toISOString().slice(0, 10);
+
+    parsedTasks = parsedTasks.filter(task =>
+    {
+        const status = task.meta.status || 'new';
+        const archived = task.meta.archived === 'true' || status === 'archive' || status === 'archived';
+        const taskDate = task.meta.dueDate ? task.meta.dueDate.slice(0, 10) : '';
+
+        switch (curGridViewMode)
+        {
+            case GridViewMode.ALL_CARDS:
+                return !archived;
+
+            case GridViewMode.TODAY:
+                return taskDate === localTodayStr && !archived;
+
+            case GridViewMode.DONE:
+                return status === 'completed' && !archived;
+
+            case GridViewMode.ARCHIVE:
+                return archived;
+
+            default:
+                return true;
+        }
+    });
 
     parsedTasks.sort((a, b) =>
     {
@@ -51,7 +95,31 @@ function renderGrid(freshCardID = null)
     {
         const card = TaskRenderer.renderCard(taskObj.raw);
         if (card.getAttribute('data-id') === String(freshCardID)) card.classList.add('animate-in');
-        if (taskObj.meta.status === 'completed') card.style.opacity = '0.5';
+
+        const archived = taskObj.meta.archived === 'true';
+        const completed = taskObj.meta.status === 'completed';
+
+        if (archived)
+        {
+            card.style.opacity = '0.5';
+            
+            const btnDelete = card.querySelector('.btn-delete');
+            const btnEdit = card.querySelector('.btn-edit');
+
+            if (btnDelete)
+            {
+                btnDelete.setAttribute('data-lang', 'deletetask')
+                btnDelete.innerText = 'Delete';
+            }
+
+            if (btnEdit)
+            {
+                btnEdit.setAttribute('data-lang', 'unarchivetask')
+                btnEdit.innerText = 'Unarchive';
+            }
+        }
+        else if (completed) card.style.opacity = '0.5';
+
         taskgrid.appendChild(card);
 
     });
@@ -59,87 +127,6 @@ function renderGrid(freshCardID = null)
     applyLang(localStorage.getItem('lang') || 'ENG');
     taskEmptyText();
 }
-
-let todayTask = false;
-
-function renderTodayGrid()
-{
-    const today = new Date();
-    const todayStr = today.toISOString().slice(0, 10);
-    if (todayTask) {
-        document.querySelectorAll('.task-card').forEach(card => {
-            card.style.display = '';
-        });
-        todayTask = false;
-        return;
-    }
-
-    document.querySelectorAll('.task-card').forEach(card => {
-    const dueDate = card.querySelector('.time-card').value || '';
-    if (dueDate !== '' && dueDate.slice(0, 10) !== todayStr) {
-        card.style.display = 'none';
-    }
-});
-todayTask = true;
-}
-
-
-function renderCompletedGrid(id)
-{
-    const card = document.querySelector(`.task-card[data-id="${id}"]`);
-    const checkbox = document.querySelector(`.task-card[data-id="${id}"] .checkbox-card`);
-    if (!card) return;
-    if(checkbox.checked){
-    card.style.opacity = '0.4';
-    }
-    else if(!checkbox.checked){
-        card.style.opacity = '';
-    }
-}
-
-function completedTask(id) {
-    renderCompletedGrid(id);
-}
-let done = false;
-
-function DoneTask() {
-    if (done) {
-        document.querySelectorAll('.task-card').forEach(card => {
-            card.style.display = '';
-        });
-        done = false;
-        return;
-    }
-
-    document.querySelectorAll('.task-card').forEach(card => {
-        const checkbox = card.querySelector('.checkbox-card');
-        if (!checkbox.checked) {
-            card.style.display = 'none';
-        }
-    });
-    done = true;
-}
-function renderTodayGrid()
-{
-    const today = new Date();
-    const todayStr = today.toISOString().slice(0, 10);
-    if (todayTask) {
-        document.querySelectorAll('.task-card').forEach(card => {
-            card.style.display = '';
-        });
-        todayTask = false;
-        return;
-    }
-
-    document.querySelectorAll('.task-card').forEach(card => {
-    const dueDate = card.querySelector('.time-card').value || '';
-    if (dueDate !== '' && dueDate.slice(0, 10) !== todayStr) {
-        card.style.display = 'none';
-    }
-});
-todayTask = true;
-}
-
 
 function addTaskCard()
 { TaskEditor.open(null, '', '', '', EditorMode.EDITOR); }
@@ -159,7 +146,9 @@ function openTaskCard(id, mode)
     const dueDate = parsed.metadata.dueDate || '';
     const taskColor = parsed.metadata.color || '#7A6ED6';
     const taskStatus = parsed.metadata.status || 'new';
-    TaskEditor.open(id, title, body, dueDate, mode, taskColor, taskStatus);
+    const archived = parsed.metadata.archived || 'false';
+
+    TaskEditor.open(id, title, body, dueDate, mode, taskColor, taskStatus, archived);
 }
 
 function viewCard(id)
@@ -188,20 +177,24 @@ taskgrid.addEventListener('click', (event) =>
 
         setTimeout(() =>
         {
-            TaskStore.remove(id);
-            if (document.startViewTransition)
-            {
-                document.startViewTransition(() =>
-                {
-                    card.remove();
-                    taskEmptyText();
-                });
-            }
+            if (curGridViewMode === GridViewMode.ARCHIVE) TaskStore.remove(id);
             else
             {
-                card.remove();
-                taskEmptyText();
+                const allTasks = TaskStore.getAll();
+                const rawMarkdown = allTasks.find(t => t.includes(`id: ${id}`));
+
+                if (rawMarkdown)
+                {
+                    let newMd;
+                    
+                    if (/^archived:/m.test(rawMarkdown)) newMd = rawMarkdown.replace(/^archived:.*$/m, `archived: true`);
+                    else newMd = rawMarkdown.replace(/^---\n/, `---\narchived: true\n`);
+                    newMd = newMd.replace(/^status:\s*archive.*$/m, 'status: new');
+                    TaskStore.update(id, newMd);
+                }
             }
+
+            sortGrid();
         }, 300);
         
         return;
@@ -209,6 +202,25 @@ taskgrid.addEventListener('click', (event) =>
 
     if (event.target.classList.contains('btn-edit'))
     {
+        if (curGridViewMode === GridViewMode.ARCHIVE)
+        {
+            const allTasks = TaskStore.getAll();
+            const rawMarkdown = allTasks.find(t => t.includes(`id: ${id}`));
+
+            if (rawMarkdown)
+            {
+                let newMd = rawMarkdown;
+
+                if (/^archived:/m.test(newMd)) newMd = newMd.replace(/^archived:.*$/m, `archived: false`);
+                
+                newMd = newMd.replace(/^status:\s*archive.*$/m, 'status: new');
+                TaskStore.update(id, newMd);
+                sortGrid();
+            }
+
+            return;
+        }
+
         openTaskCard(id, EditorMode.EDITOR);
         return;
     }
@@ -233,6 +245,8 @@ taskgrid.addEventListener('change', (event) => {
         else newMd = rawMarkdown.replace(/^---\n/, `---\nstatus: ${newStatus}\n`);
         
         TaskStore.update(id, newMd);
+
+        setTimeout(() => sortGrid(), 2000);
     }
 });
 

@@ -28,6 +28,7 @@ const TaskEditor = (function() {
     let currentId = null;
     let currentMode = EditorMode.EDITOR;
     let currentStatus = 'new';
+    let currentArchived = 'false';
 
     const defaultState =
     {
@@ -191,7 +192,7 @@ const TaskEditor = (function() {
         const md = 
 `---
 id: ${id}
-status: ${currentStatus}
+status: ${taskStatus}
 dueDate: ${dueDate}
 color: ${taskColor}
 ---
@@ -211,11 +212,12 @@ ${mdContent}`;
     function getCurrentMD()
     { return currentMode === EditorMode.RAW ? rawInput.value : Converter.toMD(visualArea.innerHTML); }
 
-    function open(id = null, title = '', content = '', dueDate = '', mode = EditorMode.EDITOR, color = '#7A6ED6', status)
+    function open(id = null, title = '', content = '', dueDate = '', mode = EditorMode.EDITOR, color = '#7A6ED6', status = 'new', archived = 'false')
     {
         currentId = id;
         currentStatus = status;
         colorInput.value = color;
+        currentArchived = archived;
         modalContent.style.setProperty('--task-color', color);
 
         if (mode === EditorMode.VIEW) modeName.setAttribute('data-lang', 'viewtask');
@@ -260,6 +262,7 @@ ${mdContent}`;
             rawInput.value = '';
             rawPreview.innerHTML = '';
             currentStatus = 'new';
+            currentArchived = 'false';
             applyState(EditorMode.EDITOR);
         }, 300);
     }
@@ -279,6 +282,7 @@ ${mdContent}`;
 `---
 id: ${id}
 status: ${currentStatus}
+archived: ${currentArchived}
 dueDate: ${dueDate}
 color: ${taskColor}
 ---

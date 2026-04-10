@@ -62,7 +62,7 @@ const TaskRenderer = (function()
                 <input type="datetime-local" class="time-card" value="${dueDate}" onclick="viewCard('${parsed.metadata.id}')" readonly />
             </div>
             
-            <input type="checkbox" class="checkbox-card" onclick="completedTask('${parsed.metadata.id}')"${isChecked} />
+            <input type="checkbox" class="checkbox-card" ${isChecked} />
             <p class="text-title" data-lang="titletask">${title}</p>
             <p class="text-body" data-lang="bodytask">${formattedDescription}</p>
             <div class="card-bth">

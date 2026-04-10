@@ -31,12 +31,12 @@
                 <div class ="menu">
                     <p class = "title" data-lang="maintext">Main</p>
                     <ul>
-                        <li class = "active">
-                        <a href="home.html"><img src="img/home.png" class = "icon">
+                        <li class = "active" onclick="setGridViewMode('allCards')">
+                        <a href="#"><img src="img/home.png" class = "icon">
                         <span class = "text" data-lang="hometext">Home</span>
                         </a>
                         </li>
-                        <li class = "archive">
+                        <li class = "archive" onclick="setGridViewMode('archive')">
                         <a href="#"><img src="img/archive.png" class = "icon">
                         <span class = "text" data-lang="archivetext">Archive</span>
                         </a>
@@ -117,26 +117,26 @@
         <div class = "container-top">
             <div class = "menu-top-div">
                 <ul class = "menu-top-ul">
-                    <li>
+                    <li onclick="setGridViewMode('allCalendar')">
                         <a href = "#">
                         <img src="img/calendar.png" class = "icon">
                          <span class = "text-top" data-lang="calendar">Calendar</span>
                         </a>
                     </li>
-                    <li onclick="renderTodayGrid()">
+                    <li onclick="setGridViewMode('today')">
                         <a href = "#">
                         <img src="img/clock.png"class = "icon">
                          <span class = "text-top" data-lang="today">Today</span>
                         </a>
                     </li>
-                    <li>
-                        <a href = "#" onclick="sortGrid()">
+                    <li onclick="sortGrid()">
+                        <a href = "#">
                         <img src="img/sort.png" class = "icon">
                          <span class = "text-top" data-lang="sorting">Sorting</span>
                         </a>
                     </li>
-                    <li>
-                        <a href = "#" onclick="DoneTask()">
+                    <li onclick="setGridViewMode('done')">
+                        <a href = "#">
                         <img src="img/done.png" class = "icon">
                          <span class = "text-top" data-lang="donetask">Done task</span>
                         </a>
@@ -209,7 +209,7 @@
                     </div>
                 </div>
                 <div class="modal-buttons">
-                    <button id="editor-cancel" data-lang="canceltask"" >Cancel</button>
+                    <button id="editor-cancel" data-lang="canceltask">Cancel</button>
                     <button id="editor-save" data-lang="savetask">Save Task</button>
                 </div>
             </div>
