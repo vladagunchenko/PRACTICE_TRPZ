@@ -106,23 +106,26 @@ function renderGrid(freshCardID = null)
             const btnDelete = card.querySelector('.btn-delete');
             const btnEdit = card.querySelector('.btn-edit');
 
-function renderCompletedGrid(id)
-{
-    const card = document.querySelector(`.task-card[data-id="${id}"]`);
-    const checkbox = document.querySelector(`.task-card[data-id="${id}"] .checkbox-card`);
-    if (!card) return;
-    if(checkbox.checked){
-    card.style.opacity = '0.4';
-    }
-    else if(!checkbox.checked){
-        card.style.opacity = '';
-    }
-}
+            if (btnDelete)
+            {
+                btnDelete.setAttribute('data-lang', 'deletetask')
+                btnDelete.innerText = 'Delete';
+            }
+
+            if (btnEdit)
+            {
+                btnEdit.setAttribute('data-lang', 'unarchivetask')
+                btnEdit.innerText = 'Unarchive';
+            }
+        }
+        else if (completed) card.style.opacity = '0.5';
 
         taskgrid.appendChild(card);
 
     });
-    done = true;
+    
+    applyLang(localStorage.getItem('lang') || 'ENG');
+    taskEmptyText();
 }
 
 function addTaskCard()
