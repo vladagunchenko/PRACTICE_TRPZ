@@ -276,16 +276,16 @@
 .about_f{
     font-size: 25px;
     color: var(--text);
-    padding: 2em 2em 0.5em 2em;
+    padding: 1.5em 1em 0.5em 2em;
     border-radius: 10px;
     background-color: var(--color-card);
-    height: auto;
-    width: 90vw;
+    height: 600px;
+    width: 72vw;
     max-width: 800px;
     max-width: 100%;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    overflow-y: auto;
+    overflow-y: none;
     
 }
 .about_f p{
