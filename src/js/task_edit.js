@@ -40,7 +40,8 @@ const TaskEditor = (function() {
         showRawArea: 'none',
         contentEditable: 'true',
         workspaceBorder: '',
-        importButton: ''
+        importButton: '',
+        colorInput: ''
     };
 
     const editorStateProperties =
@@ -59,7 +60,8 @@ const TaskEditor = (function() {
             showSwapBtn: 'none',
             showModalButtons: 'none',
             contentEditable: 'false',
-            importButton: 'none'
+            importButton: 'none',
+            colorInput: 'none'
         }
     };
 
@@ -79,6 +81,7 @@ const TaskEditor = (function() {
         rawArea.style.display = conf.showRawArea;
         workspace.style.border = conf.workspaceBorder;
         importButton.style.display = conf.importButton;
+        colorInput.style.display = conf.colorInput;
     }
 
     const Converter =

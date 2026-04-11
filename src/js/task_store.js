@@ -8,6 +8,9 @@ const TaskStore = (function()
     function getAll()
     { return JSON.parse(localStorage.getItem(KEY) || '[]'); }
 
+    function setAll(tasksArray) 
+    { save(tasksArray); }
+
     function add(mdString)
     {
         const tasks = getAll();
@@ -43,7 +46,7 @@ const TaskStore = (function()
         save(tasks);
     }
 
-    return { getAll, add, remove, update };
+    return { getAll, setAll, add, remove, update };
 })();
 
 function exportAllTasks()

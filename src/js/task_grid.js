@@ -12,7 +12,7 @@ let previousBaseMode = GridViewMode.ALL_CARDS;
 
 function setGridViewMode(mode)
 {
-    if ((mode === GridViewMode.TODAY || mode === GridViewMode.DONE) && curGridViewMode === mode) curGridViewMode = previousBaseMode; 
+    if ((mode === GridViewMode.TODAY || mode === GridViewMode.DONE) && curGridViewMode === mode) curGridViewMode = previousBaseMode;
     else
     {
         if (curGridViewMode === GridViewMode.ALL_CARDS || curGridViewMode === GridViewMode.ALL_CALENDAR) previousBaseMode = curGridViewMode;
