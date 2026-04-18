@@ -5,6 +5,11 @@ const TaskStore = (function()
     function save(tasks)
     { 
         localStorage.setItem(KEY, JSON.stringify(tasks));
+        const user = window._firebaseAuth?.currentUser;
+        if (!user)
+        {
+            return;
+        }
         const { doc, setDoc } = window._firestoreFns;
         setDoc(doc(window._firebaseDb, "users", user.uid), { tasks }, { merge: true });
     }
