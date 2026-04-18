@@ -249,5 +249,3 @@ taskgrid.addEventListener('change', (event) => {
         setTimeout(() => sortGrid(), 2000);
     }
 });
-
-renderGrid();

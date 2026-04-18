@@ -130,7 +130,8 @@ langList.querySelectorAll('li').forEach(li => {
     }
 });
 
-function exitaccount(){
+function exitaccount() {
+    localStorage.removeItem('tasks');
     window.location.href = "index.html";
 }
 

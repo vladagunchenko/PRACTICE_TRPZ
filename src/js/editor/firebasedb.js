@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
  const firebaseConfig = {
     apiKey: "AIzaSyAVhJoj2QCmOlWAc9EgvcFFldD8yLp1l64",
     authDomain: "login-form-ee124.firebaseapp.com",
@@ -13,18 +13,32 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
  
- onAuthStateChanged(auth, async (user) => {
+window._firebaseAuth = auth;
+window._firebaseDb = db;
+window._firestoreFns = { doc, setDoc };
+
+onAuthStateChanged(auth, async (user) => {
     if (user) {
     const docRef = doc(db, "users", user.uid);
     const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
          const data = docSnap.data();
-        document.querySelector('.name-user').textContent = data.username || 'User';
-        document.querySelector('.email-user').textContent = data.email || user.email;
-        } else {
-        document.querySelector('.name-user').textContent = 'User';
-        document.querySelector('.email-user').textContent = user.email;}
-        } else {
-         window.location.href = "index.html";
+            document.querySelectorAll('.name-user').forEach(el => {
+                el.textContent = data.username || 'User';
+            });
+            document.querySelectorAll('.email-user').forEach(el => {
+                el.textContent = data.email || user.email;
+            });
+            localStorage.setItem('tasks', JSON.stringify(data.tasks || []));
+            if (typeof renderGrid === 'function') renderGrid()
+                }
+
+            document.querySelectorAll('.task-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transition = 'opacity 0.3s';
+            setTimeout(() => { card.style.opacity = '1'; }, 50);
+});
+    } else {
+        window.location.href = "index.html";
     }
 });

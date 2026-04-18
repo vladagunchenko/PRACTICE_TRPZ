@@ -3,7 +3,11 @@ const TaskStore = (function()
     const KEY = 'tasks';
         
     function save(tasks)
-    { localStorage.setItem(KEY, JSON.stringify(tasks)) }
+    { 
+        localStorage.setItem(KEY, JSON.stringify(tasks));
+        const { doc, setDoc } = window._firestoreFns;
+        setDoc(doc(window._firebaseDb, "users", user.uid), { tasks }, { merge: true });
+    }
 
     function getAll()
     { return JSON.parse(localStorage.getItem(KEY) || '[]'); }
