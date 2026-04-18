@@ -116,45 +116,7 @@
 
 
 
-        <div class = "container-top">
-            <div class = "menu-top-div">
-                <ul class = "menu-top-ul">
-                    <li onclick="setGridViewMode('allCalendar')">
-                        <a href = "#">
-                        <img src="img/calendar.png" class = "icon">
-                         <span class = "text-top" data-lang="calendar">Calendar</span>
-                        </a>
-                    </li>
-                    <li onclick="setGridViewMode('today')">
-                        <a href = "#">
-                        <img src="img/clock.png"class = "icon">
-                         <span class = "text-top" data-lang="today">Today</span>
-                        </a>
-                    </li>
-                    <li onclick="sortGrid()">
-                        <a href = "#">
-                        <img src="img/sort.png" class = "icon">
-                         <span class = "text-top" data-lang="sorting">Sorting</span>
-                        </a>
-                    </li>
-                    <li onclick="setGridViewMode('done')">
-                        <a href = "#">
-                        <img src="img/done.png" class = "icon">
-                         <span class = "text-top" data-lang="donetask">Done task</span>
-                        </a>
-                    </li>
-                </ul>
-                <div class = separator></div>
-                <ul class = "menu-top-ul" onclick="addTaskCard()">
-                    <li >
-                        <a href = "#">
-                        <img src="img/add.png" class = "icon" id = "open">
-                         <span class = "text-top" data-lang="addtask">Add a task</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        
 
         <!-- 
         <div class ="task-empty" data-task-empty>
@@ -165,6 +127,45 @@
         <div class="task-grid-wrapper">
             <div class="ears-row">
                 <div class="left-ear"></div>
+                <div class = "container-top">
+                <div class = "menu-top-div">
+                    <ul class = "menu-top-ul">
+                        <li onclick="setGridViewMode('allCalendar')">
+                            <a href = "#">
+                            <img src="img/calendar.png" class = "icon">
+                            <span class = "text-top" data-lang="calendar">Calendar</span>
+                            </a>
+                        </li>
+                        <li onclick="setGridViewMode('today')">
+                            <a href = "#">
+                            <img src="img/clock.png"class = "icon">
+                            <span class = "text-top" data-lang="today">Today</span>
+                            </a>
+                        </li>
+                        <li onclick="sortGrid()">
+                            <a href = "#">
+                            <img src="img/sort.png" class = "icon">
+                            <span class = "text-top" data-lang="sorting">Sorting</span>
+                            </a>
+                        </li>
+                        <li onclick="setGridViewMode('done')">
+                            <a href = "#">
+                            <img src="img/done.png" class = "icon">
+                            <span class = "text-top" data-lang="donetask">Done task</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class = separator></div>
+                    <ul class = "menu-top-ul" onclick="addTaskCard()">
+                        <li >
+                            <a href = "#">
+                            <img src="img/add.png" class = "icon" id = "open">
+                            <span class = "text-top" data-lang="addtask">Add a task</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
                 <div class="right-ear"></div>
             </div>
             <div class="task-card-scroll-area">

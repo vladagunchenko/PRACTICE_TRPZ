@@ -1,8 +1,8 @@
 .task-grid-wrapper {
-    margin: 0 10px 0 102px;
+    margin: 0 10px 10px 102px;
     padding: 10px 0 10px 0;
     position: relative;
-    height: 100vh;
+    height: calc(100vh - 10px);
     display: flex;
     flex-direction: column;
     filter: 
@@ -14,21 +14,20 @@
 
 .ears-row {
     display: flex;
-    height: 70px;
-    gap: 320px;
+    height: 80px;
     position: sticky;
-    z-index: 10;
-    pointer-events: none;
+    z-index: var(--z-sticky-header);
+    top: 0;
+    align-items: flex-end;
 }
 
 .left-ear, .right-ear {
     background-color: var(--color-behind-panel);
     border-radius: var(--curve) var(--curve) 0 0; 
     position: relative;
+    height: 75px;
+    flex: 1;
 }
-
-.left-ear { flex: 0 0 calc(50vw - 120px - 142px); }
-.right-ear { flex: 1; }
 
 .left-ear::after {
     content: "";
@@ -55,8 +54,8 @@
     padding-left: 20px;
     background-color: var(--color-behind-panel);
     display: grid;
-    overflow-y: auto; 
-    height: calc(100vh - 90px);
+    overflow-y: auto;
+    height: calc(100vh - 110px);
     min-height: calc(100vh - 90px);
     grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
     grid-auto-rows: 220px;
@@ -224,5 +223,15 @@ input[type ="checkbox"]:checked::after {
     bottom: 20px;
     width: 5px;
     border-radius: 3px;
-    z-index: 1;
+    z-index: var(--z-card-element);
+}
+
+@media (max-width: 768px) {
+    .task-grid-wrapper {
+        margin: 0 10px 0 10px;
+    }
+
+    .task-grid-container {
+        grid-template-columns: 1fr; 
+    }
 }

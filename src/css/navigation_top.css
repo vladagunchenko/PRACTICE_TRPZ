@@ -1,16 +1,15 @@
-.container-top{
-    z-index: 1000;
-    position: fixed;
-    transform: translateX(-50%);
-    top: 10px;
-    left: 50%;
-    width:300px;
+.container-top {
+    z-index: var(--z-top-nav);
+    width: max-content;
+    padding: 0 10px; 
     height: 60px;
     border-radius: 10px;
-    background-color:var( --color-panel); 
+    background-color: var(--color-panel); 
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: 15px;
+    transition: padding 0.4s ease; 
 }
 
 .menu-top-div{
@@ -35,37 +34,33 @@
     border-radius: 2px;
 }
 
-.container-top .menu-top-ul li{
+.container-top .menu-top-ul li {
     list-style: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
+    width: 40px; 
     height: 40px;
     border-radius: 10px;
-    transition: all 0.4s ease;
+    transition: transform 0.4s ease, background-color 0.4s ease;
     cursor: pointer;
+    position: relative; 
 }
 
-.menu-top-ul img{
+.menu-top-ul img {
     width: 25px;
     height: 25px;
     object-fit: cover;
     filter: invert(1);
-    transition: all 0.4s ease;
+    transition: transform 0.4s ease;
 }
 
-.container-top ul li:hover{
+.container-top ul li:hover {
     background-color: var(--color-hover);
-    border-radius: 10px;
-    width: 55px; 
-    height: 55px;
+    transform: scale(1.375); 
+    z-index: 2;
 }
 
-.container-top ul li:hover img {
-    width: 35px;
-    height: 35px;
-}
 .menu-top-div > ul > li > a {
     position: relative;
     display: flex;
@@ -77,14 +72,13 @@
     position: absolute;
     top: 70px;
     left: 50%;
-    transform: translateX(-50%) translateY(10px);
+    transform: translateX(-50%) translateY(10px) scale(0.727);
     padding: 8px 10px;
     border-radius: 6px;
     background-color: var(--color-hover);
     color: white;
     font-size: 13px;
     white-space: nowrap;
-
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
@@ -94,7 +88,7 @@
 .menu-top-div > ul > li > a .text-top::after {
     content: "";
     position: absolute;
-    top: -6px;
+    top: -5px;
     left: 50%;
     transform: translateX(-50%) rotate(45deg);
     width: 10px;
@@ -105,5 +99,38 @@
 .menu-top-div > ul > li > a:hover .text-top {
     opacity: 1;
     visibility: visible;
-    transform: translateX(-50%) translateY(0);
+    transform: translateX(-50%) translateY(0) scale(0.727);
+}
+
+.menu-top-ul, .separator {
+    transition: transform 0.4s ease;
+}
+
+.menu-top-ul li:hover ~ li {
+    transform: translateX(7.5px);
+}
+
+.menu-top-ul li:has(~ li:hover) {
+    transform: translateX(-7.5px);
+}
+
+.menu-top-div:has(.menu-top-ul:first-of-type li:hover) > .separator,
+.menu-top-div:has(.menu-top-ul:first-of-type li:hover) > .menu-top-ul:last-of-type {
+    transform: translateX(7.5px);
+}
+
+.menu-top-div:has(.menu-top-ul:last-of-type li:hover) > .separator,
+.menu-top-div:has(.menu-top-ul:last-of-type li:hover) > .menu-top-ul:first-of-type {
+    transform: translateX(-7.5px);
+}
+
+@media (max-width: 768px) {
+    .container-top {
+        padding: 0 10px;
+        margin: 10px;
+    }
+    
+    .menu-top-div {
+        gap: 8px;
+    }
 }

@@ -6,6 +6,12 @@
    font-family: "Inter", sans-serif; 
 }
 :root{
+    --z-card-element: 1;
+    --z-sticky-header: 10;
+    --z-top-nav: 100;
+    --z-tooltip: 200;
+    --z-sidebar: 1000;
+    --z-modal: 2000;
     --text: black;
     --base-color: white;
     --color-panel:#000000;
@@ -67,7 +73,7 @@ body{
     color: white;
 }
 .left-panel{
-    z-index: 10;
+    z-index: var(--z-sidebar);
     position: fixed;
     width: 250px;
     height: 100vh;
@@ -76,7 +82,7 @@ body{
     background-color:var( --color-panel); 
     padding: 24px;
     border-radius: 0px;
-    
+    transition: width 0.4s ease;
 }
 
 .left-panel .head{
@@ -109,7 +115,8 @@ body{
 .menu .title{
     font-size: 9.5px;
     font-weight: 500; 
-    overflow: hidden; 
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .user-details .name-user{
@@ -146,6 +153,8 @@ body{
     padding: 12px 8px;
     border-radius: 8px;
     transition:  all 0.3s;
+    white-space: nowrap; 
+    overflow: hidden;
 }
 
 .menu .icon{
@@ -256,37 +265,68 @@ body{
 .left-panel.active .menu-btn .img-btn {
     transform: rotate(180deg);
 }
-.left-panel.active .user-details{
-    display: none;
-}
-.left-panel.active .menu .title{
-    text-align: center;
-}
+
 .left-panel.active .menu ul li .arrow{
     display: none;
 }
-.left-panel.active .menu >ul > li> a {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-self: center;
+
+.user-details, 
+.menu ul li a .text,
+.moon-sun a .text,
+.icon-flag {
+    transition: max-width 0.4s ease, opacity 0.4s ease;
+    max-width: 250px;
+    opacity: 1;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
-.left-panel.active .menu  >ul >li> a .text{
+.menu ul li a, .moon-sun a {
+    transition: gap 0.4s ease, background-color 0.3s;
+}
+.left-panel .head {
+    transition: gap 0.4s ease;
+}
+
+.left-panel.active .user-details,
+.left-panel.active .menu ul li a .text,
+.left-panel.active .moon-sun a .text,
+.left-panel.active .icon-flag {
+    max-width: 0;
+    opacity: 0;
+    padding: 0;
+    margin: 0;
+    pointer-events: none;
+}
+
+.left-panel.active .menu ul li a,
+.left-panel.active .moon-sun a,
+.left-panel.active .head {
+    gap: 0;
+}
+
+.left-panel.active .menu > ul > li > a {
+    position: relative;
+}
+
+.left-panel.active .menu > ul > li > a:hover .text {
     position: absolute;
-    left:70px;
+    left: 70px;
     top: 50%;
     transform: translateY(-50%);
     padding: 10px;
     border-radius: 4px;
     color: white;
-     background-color: var(--color-hover);
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s;
+    background-color: var(--color-hover);
+    max-width: max-content;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    z-index: var(--z-tooltip);
+    transition: opacity 0.3s ease;
 }
 
-.left-panel.active .menu >ul >li > a .text::after{
+.left-panel.active .menu > ul > li > a:hover .text::after {
     content: "";
     position: absolute;
     left: -5px;
@@ -298,46 +338,46 @@ body{
     transform: rotate(45deg);
     z-index: -1;
 }
-.left-panel.active .menu >ul >li > a:hover .text{
-    left: 50px;
-    opacity: 1;
-    visibility: visible;
-}
-.left-panel.active .icon-flag{
-    display: none;
-}
-.icon-theme{
-    filter: invert(1);
-}
 
-.moon-sun {
-    position: relative;
-    width: 100%;
+@media (max-width: 768px) {
+    .left-panel {
+        width: 250px; 
+        height: 100vh;
+        margin: 0;
+        top: 0; 
+        left: 0;
+        z-index: var(--z-sidebar);
+        border-radius: 0;
+        transition: all 0.4s ease;
+    }
+
+    .menu-btn {
+        top: 25px;
+        right: auto;
+        left: 250px; 
+        transform: translateX(-50%);
+        transition: left 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .left-panel.active {
+        width: 6px;
+        margin: 1px;
+        padding: 0;
+        overflow: visible;
+        border-radius: 15px;
+    }
+
+    .left-panel.active .head,
+    .left-panel.active .nav {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: none; 
+    }
+
+    .left-panel.active .menu-btn {
+        left: 34px; 
+        transform: translateX(-50%);
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+    }
 }
-
-.moon-sun a {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 8px;
-    border-radius: 8px;
-    color: white;
-    text-decoration: none;
-    transition: all 0.3s;
-    width: 100%;
-}
-
-.moon-sun a:hover {
-    background-color: #1e1a1b;
-}
-
-
-.left-panel.active .moon-sun a {
-    justify-content: center;
-    
-}
-
-.left-panel.active .moon-sun a .text {
-    display: none;
-}
-
