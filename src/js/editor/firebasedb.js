@@ -35,7 +35,7 @@ onAuthStateChanged(auth, async (user) => {
 
             document.querySelectorAll('.task-card').forEach(card => {
             card.style.opacity = '0';
-            card.style.transition = 'opacity 0.3s';
+            card.style.transition = 'opacity 0.2s';
             setTimeout(() => { card.style.opacity = '1'; }, 50);
 });
     } else {
