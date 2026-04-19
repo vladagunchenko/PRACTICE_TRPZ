@@ -29,14 +29,14 @@
 
 ## 👥 Команда "Programists"
 
-| Роль у проекті | Прізвище та Ім'я | 
-| :--- | :--- | :--- |
-| **Program Management** | [Гунченко Владислава](https://github.com/vladagunchenko) | 
-| **Release Management** | Бакулін Данііл | 
+| Роль у проекті | Прізвище та Ім'я |
+| :--- | :--- |
+| **Program Management** | [Гунченко Владислава](https://github.com/vladagunchenko) |
+| **Release Management** | Бакулін Данііл |
 | **Product Management** | Барай Максим, Козлова Оксана |
 | **Development** | Левковська Марія, Єдалов Артем |
-| **Testing (QA)** | Савеля Максим, Зорій Ярослав | 
-| **User Experience** | Москов Іван | 
+| **Testing (QA)** | Савеля Максим, Зорій Ярослав |
+| **User Experience** | Москов Іван |
 
 ---
 
