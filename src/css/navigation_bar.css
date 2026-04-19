@@ -5,6 +5,7 @@
    box-sizing: border-box;
    font-family: "Inter", sans-serif; 
 }
+
 :root{
     --z-card-element: 1;
     --z-sticky-header: 10;
@@ -83,6 +84,7 @@ body{
     padding: 24px;
     border-radius: 0px;
     transition: width 0.4s ease;
+    view-transition-name: main-sidebar;
 }
 
 .left-panel .head{
@@ -339,6 +341,10 @@ body{
     z-index: -1;
 }
 
+::view-transition-group(main-sidebar) {
+    z-index: 999999;
+}
+
 @media (max-width: 768px) {
     .left-panel {
         width: 250px; 
@@ -354,14 +360,15 @@ body{
     .menu-btn {
         top: 25px;
         right: auto;
-        left: 250px; 
+        left: 250px;
         transform: translateX(-50%);
         transition: left 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
     }
 
     .left-panel.active {
         width: 6px;
-        margin: 1px;
+        height: calc(100vh - 20px);
+        margin: 10px 1px;
         padding: 0;
         overflow: visible;
         border-radius: 15px;

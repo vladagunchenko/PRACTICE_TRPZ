@@ -99,7 +99,7 @@
 .menu-top-div > ul > li > a:hover .text-top {
     opacity: 1;
     visibility: visible;
-    transform: translateX(-50%) translateY(0) scale(0.727);
+    transform: translateX(-50%) translateY(-85%) scale(0.727);
 }
 
 .menu-top-ul, .separator {
@@ -132,5 +132,31 @@
     
     .menu-top-div {
         gap: 8px;
+    }
+}
+
+@media (max-width: 412px) {
+    .container-top {
+        margin: 5px;
+        padding: 0 5px;
+        height: clamp(45px, 14.5vw, 60px);
+    }
+    
+    .menu-top-div {
+        gap: clamp(4px, 1.9vw, 8px);
+    }
+
+    .container-top .menu-top-ul li {
+        width: clamp(32px, 9.7vw, 40px);
+        height: clamp(32px, 9.7vw, 40px);
+    }
+
+    .menu-top-ul img {
+        width: clamp(20px, 6vw, 25px);
+        height: clamp(20px, 6vw, 25px);
+    }
+
+    .separator {
+        height: clamp(20px, 7.2vw, 30px);
     }
 }
