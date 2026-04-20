@@ -367,8 +367,8 @@ body{
 
     .left-panel.active {
         width: 6px;
-        height: calc(100vh - 20px);
-        margin: 10px 1px;
+        height: calc(100vh - 10px); 
+        margin: 0 1px 10px 1px; 
         padding: 0;
         overflow: visible;
         border-radius: 15px;

@@ -226,10 +226,12 @@ ${mdContent}`;
         if (mode === EditorMode.VIEW) modeName.setAttribute('data-lang', 'viewtask');
         else if (id === null)
         {
-            const now = new Date();
-            const offset = now.getTimezoneOffset() * 60000;
-
-            dueDate = new Date(now - offset).toISOString().slice(0, 16);
+            if (!dueDate)
+            {
+                const now = new Date();
+                const offset = now.getTimezoneOffset() * 60000;
+                dueDate = new Date(now - offset).toISOString().slice(0, 16);
+            }
             modeName.setAttribute('data-lang', 'addtask');
         }
         else modeName.setAttribute('data-lang', 'edittask2');
