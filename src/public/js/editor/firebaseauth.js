@@ -50,7 +50,7 @@ document.getElementById('submit-l').addEventListener('click', (event) => {
 
   signInWithEmailAndPassword(auth, email_l, password_l)
     .then((userCredential) => {
-      window.location.href = "home.html";
+      window.location.href = "/home.html";
     })
     .catch((error) => {
       alert(error.message);
