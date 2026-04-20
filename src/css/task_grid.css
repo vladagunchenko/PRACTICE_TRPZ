@@ -25,14 +25,14 @@
     position: sticky;
     z-index: var(--z-sticky-header);
     top: 0;
-    align-items: flex-end;
+    align-items: stretch;
 }
 
 .left-ear, .right-ear {
     background-color: var(--color-behind-panel);
     border-radius: var(--curve) var(--curve) 0 0; 
     position: relative;
-    height: calc(100% - 5px); 
+    margin-top: 5px; 
     flex: 1;
 }
 

@@ -22,15 +22,8 @@ const TaskRenderer = (function()
         return { metadata, content };
     }
 
-    function renderCard(mdString)
-    {
-        const parsed = parseFrontmatter(mdString);
-        const lines = parsed.content.split('\n');
-        const taskColor = parsed.metadata.color || '#7A6ED6';
-        const title = lines[0] ? lines[0].replace('# ', '') : 'Task name';
-        let description = lines.slice(1);
-        let formattedDescription = description.map(line =>
-        {
+    function renderCard(taskObj) {
+        let formattedDescription = taskObj.bodyLines.map(line => {
             let cleanLine = line.trim();
             if (cleanLine.startsWith('- ')) cleanLine = '&nbsp;&nbsp;• ' + cleanLine.substring(2);
             
@@ -42,28 +35,26 @@ const TaskRenderer = (function()
             return cleanLine;
         }).join('<br>');
 
-        const isChecked = parsed.metadata.status === 'completed' ? 'checked' : '';
-        const dueDate = parsed.metadata.dueDate || '';
+        const isChecked = taskObj.status === 'completed' ? 'checked' : '';
 
         const card = document.createElement('div');
         card.className = 'task-card';
-        card.id = `task-${parsed.metadata.id}`;
-        card.style.viewTransitionName = `taskcard-${parsed.metadata.id}`;
-        card.style.setProperty('--current-task-color', taskColor);
+        card.id = `task-${taskObj.id}`;
+        card.style.viewTransitionName = `taskcard-${taskObj.id}`;
+        card.style.setProperty('--current-task-color', taskObj.color);
         card.setAttribute('data-task', '');
-        card.setAttribute('data-id', parsed.metadata.id);
-        card.style.setProperty('--current-task-color', taskColor);
+        card.setAttribute('data-id', taskObj.id);
         
         card.innerHTML = `
             <div class="card-color-line"></div>
 
             <div class="time-badge-wrapper">
                 <div class="task-dot"></div>
-                <input type="datetime-local" class="time-card" value="${dueDate}" onclick="viewCard('${parsed.metadata.id}')" readonly />
+                <input type="datetime-local" class="time-card" value="${taskObj.dueDate}" onclick="viewCard('${taskObj.id}')" readonly />
             </div>
             
             <input type="checkbox" class="checkbox-card" ${isChecked} />
-            <p class="text-title" data-lang="titletask">${title}</p>
+            <p class="text-title" data-lang="titletask">${taskObj.title}</p>
             <p class="text-body" data-lang="bodytask">${formattedDescription}</p>
             <div class="card-bth">
                 <p class="btn-edit" data-lang="edittask">Edit</p>

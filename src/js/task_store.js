@@ -1,10 +1,13 @@
 const TaskStore = (function()
 {
     const KEY = 'tasks';
-        
+    let parsedCache = null;
+
     function save(tasks)
     { 
         localStorage.setItem(KEY, JSON.stringify(tasks));
+        parsedCache = null;
+        
         const user = window._firebaseAuth?.currentUser;
         if (!user)
         {
@@ -17,8 +20,30 @@ const TaskStore = (function()
     function getAll()
     { return JSON.parse(localStorage.getItem(KEY) || '[]'); }
 
+    function getParsed() {
+        if (!parsedCache) {
+            parsedCache = getAll().map(md => {
+                const parsed = TaskRenderer.parseFrontmatter(md);
+                const lines = parsed.content.split('\n');
+                return {
+                    id: parsed.metadata.id,
+                    status: parsed.metadata.status || 'new',
+                    archived: parsed.metadata.archived || 'false',
+                    dueDate: parsed.metadata.dueDate || '',
+                    color: parsed.metadata.color || '#7A6ED6',
+                    title: lines[0] ? lines[0].replace('# ', '') : 'Untitled',
+                    bodyLines: lines.slice(1),
+                    raw: md
+                };
+            });
+        }
+        return parsedCache;
+    }
+
     function setAll(tasksArray) 
     { save(tasksArray); }
+
+
 
     function add(mdString)
     {
@@ -28,14 +53,7 @@ const TaskStore = (function()
     }
 
     function findTaskIndex(tasks, id)
-    {
-        return tasks.findIndex(task =>
-        {
-            const match = task.match(/^---\n([\s\S]*?)\n---/);
-            if (!match) return false;
-            return match[1].split('\n').some(line => line.trim() === `id: ${id}`);
-        });
-    }
+    { return tasks.findIndex(task => task.includes(`id: ${id}`)); }
 
     function remove(id)
     {
@@ -55,7 +73,7 @@ const TaskStore = (function()
         save(tasks);
     }
 
-    return { getAll, setAll, add, remove, update };
+    return { getAll, getParsed, setAll, add, remove, update };
 })();
 
 function exportAllTasks()
@@ -63,8 +81,7 @@ function exportAllTasks()
     const tasks = TaskStore.getAll();
     if (tasks.length === 0) return alert('No tasks to export.');
 
-    tasks.forEach(mdString =>
-    {
+    tasks.forEach(mdString => {
         const idMatch = mdString.match(/^id:\s*(.+)$/m);
         const id = idMatch ? idMatch[1].trim() : Date.now();
 
