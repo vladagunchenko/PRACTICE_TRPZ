@@ -77,11 +77,6 @@ document.getElementById('submit-l').addEventListener('click', (event) => {
   event.preventDefault();
   const password_l = document.getElementById('login-password').value;
   const email_l = document.getElementById('login-email').value.trim().toLowerCase();
-    const blockedEmail = "zoriu.ayroslav2007@gmail.com";
-    if (email_l === blockedEmail) {
-      alert("Доступ заборонено");
-      return;
-    }
   signInWithEmailAndPassword(auth, email_l, password_l)
     .then((userCredential) => {
       window.location.href = "/home.html";
