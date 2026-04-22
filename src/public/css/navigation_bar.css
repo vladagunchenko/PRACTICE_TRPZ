@@ -73,14 +73,16 @@ body{
     min-height: 100vh;
     color: white;
 }
-.left-panel{
+.left-panel {
     z-index: var(--z-sidebar);
     position: fixed;
     width: 250px;
     height: 100vh;
+    height: 100dvh; 
+    overflow: visible;
     display: flex;
     flex-direction: column;
-    background-color:var( --color-panel); 
+    background-color: var(--color-panel); 
     padding: 24px;
     border-radius: 0px;
     transition: width 0.4s ease;
@@ -349,12 +351,14 @@ body{
     .left-panel {
         width: 250px; 
         height: 100vh;
+        height: 100dvh;
         margin: 0;
         top: 0; 
         left: 0;
         z-index: var(--z-sidebar);
         border-radius: 0;
         transition: all 0.4s ease;
+        overflow: visible;
     }
 
     .menu-btn {
@@ -367,8 +371,9 @@ body{
 
     .left-panel.active {
         width: 6px;
-        height: calc(100vh - 10px); 
-        margin: 0 1px 10px 1px; 
+        height: calc(100vh - 20px); 
+        height: calc(100dvh - 20px); 
+        margin: 10px 1px;
         padding: 0;
         overflow: visible;
         border-radius: 15px;
