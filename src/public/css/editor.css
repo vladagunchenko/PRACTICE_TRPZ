@@ -157,8 +157,8 @@
 #edit-editor,
 #raw-input,
 #raw-preview {
-    overflow-wrap: anywhere;
-    word-break: break-word;
+    overflow-wrap: break-word;
+    word-break: normal;
     overflow-x: hidden;
 }
 
@@ -235,12 +235,12 @@
 }
 
 #editor-mode {
-    flex: 1 1 0%; 
+    flex: 1 1 auto;
     min-width: 0;
     line-height: 1.2;
     margin: 0;
-    overflow-wrap: anywhere; 
-    word-break: break-all;
+    overflow-wrap: break-word;
+    word-break: normal;
     white-space: normal; 
 }
 
