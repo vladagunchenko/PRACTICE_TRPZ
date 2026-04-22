@@ -10,7 +10,7 @@
 | [📂 Звіт про завершення проекту.md](https://github.com/vladagunchenko/PRACTICE_TRPZ/blob/main/docs/5.Deploying/%D0%97%D0%B2%D1%96%D1%82%20%D0%BF%D1%80%D0%BE%20%D0%B7%D0%B0%D0%B2%D0%B5%D1%80%D1%88%D0%B5%D0%BD%D0%BD%D1%8F.md) | Підсумковий документ про виконання всіх етапів проекту. |
 | [📂 Постпроектний аналіз.md](https://github.com/vladagunchenko/PRACTICE_TRPZ/blob/main/docs/5.Deploying/%D0%9F%D0%BE%D1%81%D1%82%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%BD%D0%B8%D0%B9.md) | Аналіз успіхів команди та вивчених уроків. |
 | [📂 Анкета відгуку](https://github.com/vladagunchenko/PRACTICE_TRPZ/blob/main/docs/1.Envisioning/other/fd-google-form.md) | Оцінка продукту користувачами (результати анкетування). |
-| [📂 Презентація проекту](./other/Презентація_NotePro.pptx) | Візуальний звіт про результати розробки. |
+| [📂 Презентація проекту](https://github.com/vladagunchenko/PRACTICE_TRPZ/blob/main/docs/1.Envisioning/other/%D0%BF%D1%80%D0%B5%D0%B7%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D1%96%D1%8F.pdf) | Візуальний звіт про результати розробки. |
 
 ---
 
