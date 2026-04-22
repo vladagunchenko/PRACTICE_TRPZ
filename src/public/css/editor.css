@@ -24,10 +24,14 @@
     display: flex;
     flex-direction: column;
 }
-.text-edit{
+.text-edit {
     display: flex;
     justify-content: space-between; 
-    align-items: center;
+    align-items: flex-start;
+    gap: 15px;
+    flex-wrap: wrap; 
+    width: 100%; 
+    box-sizing: border-box;
     font-size: 26px;
     font-weight: bold;
     padding-bottom: 8px;
@@ -150,6 +154,14 @@
     display: list-item;
 }
 
+#edit-editor,
+#raw-input,
+#raw-preview {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    overflow-x: hidden;
+}
+
 #edit-raw {
     flex: 1;
     display: flex;
@@ -202,7 +214,7 @@
     justify-content: space-between; 
 }
 .modal-buttons button {
-    padding: 0 50px;
+    padding: 0 10px;
     border: none;
     font-size: 18px;
     font-weight: 600;
@@ -212,9 +224,24 @@
     height: 45px;
     cursor: pointer;
     transition: all 0.2s;
+    flex: 1;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .modal-buttons button:hover {
     background:var(--hover-btn-card);
+}
+
+#editor-mode {
+    flex: 1 1 0%; 
+    min-width: 0;
+    line-height: 1.2;
+    margin: 0;
+    overflow-wrap: anywhere; 
+    word-break: break-all;
+    white-space: normal; 
 }
 
 #editor-mode-swap{
@@ -333,8 +360,10 @@
 
 .header-controls {
     display: flex;
-    align-items: center;
-    gap: 15px;
+    align-items: flex-start;
+    gap: 10px;
+    flex-wrap: wrap; 
+    justify-content: flex-start; 
 }
 
 #io-buttons {
