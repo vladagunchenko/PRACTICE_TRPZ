@@ -33,7 +33,7 @@ onAuthStateChanged(auth, async (user) => {
         el.textContent = data.email || user.email;
       });
       localStorage.setItem('tasks', JSON.stringify(data.tasks || []));
-      if (typeof renderGrid === 'function') renderGrid();
+      if (typeof sortGrid === 'function') sortGrid();
     }
 
     document.querySelectorAll('.task-card').forEach(card => {
