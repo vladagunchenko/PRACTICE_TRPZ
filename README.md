@@ -54,7 +54,7 @@
 
 ## 🔗 Корисні посилання
 
-* 🌐 **Live Demo:** [Запустити NotePro]
+* 🌐 **Product Release::** [NotePro Web App](https://login-form-ee124.web.app/index.html)
 * 📅 **Roadmap:** Статус задач у [GitHub Projects](https://github.com/vladagunchenko/PRACTICE_TRPZ/projects)
 * 💬 **Discussions:** Командні [обговорення та рішення](./discussions)
 * 📖 **Wiki:** Детальна [довідка користувача](https://github.com/vladagunchenko/PRACTICE_TRPZ/wiki)
