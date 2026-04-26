@@ -86,8 +86,16 @@ function renderGrid(freshCardID = null)
             const btnDelete = card.querySelector('.btn-delete');
             const btnEdit = card.querySelector('.btn-edit');
 
-            if (btnDelete) { btnDelete.setAttribute('data-lang', 'deletetask'); btnDelete.innerText = 'Delete'; }
-            if (btnEdit) { btnEdit.setAttribute('data-lang', 'unarchivetask'); btnEdit.innerText = 'Unarchive'; }
+            const lang = localStorage.getItem('lang') || 'ENG';
+
+            if (btnDelete) { 
+                btnDelete.setAttribute('data-lang', 'delete');
+                btnDelete.innerText = translations[lang].delete; 
+            }
+            if (btnEdit) { 
+                btnEdit.setAttribute('data-lang', 'unarchive');
+                btnEdit.innerText = translations[lang].unarchive; 
+            }
         }
         else if (completed) card.style.opacity = '0.5';
 
