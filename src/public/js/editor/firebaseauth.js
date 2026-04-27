@@ -33,7 +33,11 @@ onAuthStateChanged(auth, async (user) => {
         el.textContent = data.email || user.email;
       });
       localStorage.setItem('tasks', JSON.stringify(data.tasks || []));
-      if (typeof renderGrid === 'function') renderGrid();
+      if (typeof sortGrid === 'function') sortGrid();
+    }
+  } else {
+    if (window.location.pathname.includes("home.html")) {
+      window.location.href = "index.html";
     }
   }
 });
@@ -49,8 +53,12 @@ if (submit_R) {
     const password_r = document.getElementById('password-register').value;
     const wrapper = document.querySelector('.wrapper');
 
-    if (username === '') {
-      alert("Enter a username");
+    if (!username || !email_r || !password_r) {
+      alert("Fill in all fields");
+      return;
+    }
+    if (password_r.length < 8) {
+      alert("Password must be at least 8 characters");
       return;
     }
 
@@ -64,9 +72,19 @@ if (submit_R) {
         wrapper.classList.remove('active');
       })
       .catch((error) => {
-        alert(error.message);
+         const errorCode = error.code;
+        if(errorCode == "auth/email-already-in-use"){
+          alert("This email is already registered");
+        }
+        else if(errorCode == "auth/invalid-email"){
+          alert("Invalid email format");
+        }
+        else if(errorCode == "auth/invalid-credential"){
+          alert("Wrong email or password");
+        }
       });
   });
+
 }
 
 if (submit_L) {
@@ -80,7 +98,22 @@ if (submit_L) {
         window.location.href = "home.html";
       })
       .catch((error) => {
-        alert(error.message);
+        const errorCode = error.code;
+        if (errorCode === "auth/invalid-email") {
+          alert("Invalid email format");
+        } 
+        else if (errorCode === "auth/user-not-found") {
+          alert("User not found");
+        } 
+        else if (errorCode === "auth/wrong-password") {
+          alert("Wrong password");
+        } 
+        else if (errorCode === "auth/invalid-credential") {
+          alert("Invalid email or password");
+        } 
+        else if (errorCode === "auth/too-many-requests") {
+          alert("Too many attempts, try again later");
+        }
       });
   });
 }

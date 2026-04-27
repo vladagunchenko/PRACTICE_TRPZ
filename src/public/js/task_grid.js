@@ -24,8 +24,7 @@ const taskgrid = document.getElementById('task-grid');
 
 function sortGrid()
 {
-    if (document.startViewTransition) document.startViewTransition(() => renderGrid());
-    else renderGrid();
+    renderGrid();
 }
 
 function renderGrid(freshCardID = null)
@@ -75,7 +74,9 @@ function renderGrid(freshCardID = null)
     parsedTasks.forEach(taskObj =>
     {
         const card = TaskRenderer.renderCard(taskObj);
-        if (card.getAttribute('data-id') === String(freshCardID)) card.classList.add('animate-in');
+        taskgrid.appendChild(card);
+        void card.offsetHeight;
+        card.classList.add('animate-in');
 
         const archived = taskObj.archived === 'true';
         const completed = taskObj.status === 'completed';
@@ -99,7 +100,6 @@ function renderGrid(freshCardID = null)
         }
         else if (completed) card.style.opacity = '0.5';
 
-        taskgrid.appendChild(card);
     });
     
     applyLang(localStorage.getItem('lang') || 'ENG');
