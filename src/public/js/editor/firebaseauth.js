@@ -33,55 +33,54 @@ onAuthStateChanged(auth, async (user) => {
         el.textContent = data.email || user.email;
       });
       localStorage.setItem('tasks', JSON.stringify(data.tasks || []));
-      if (typeof sortGrid === 'function') sortGrid();
+      if (typeof renderGrid === 'function') renderGrid();
+    }
+  }
+});
+
+const submit_R = document.getElementById('submit-r');
+const submit_L = document.getElementById('submit-l');
+
+if (submit_R) {
+  submit_R.addEventListener('click', async (e) => {
+    e.preventDefault();
+    const username = document.getElementById('user-register').value;
+    const email_r = document.getElementById('email-register').value;
+    const password_r = document.getElementById('password-register').value;
+    const wrapper = document.querySelector('.wrapper');
+
+    if (username === '') {
+      alert("Enter a username");
+      return;
     }
 
-    document.querySelectorAll('.task-card').forEach(card => {
-      card.style.opacity = '0';
-      card.style.transition = 'opacity 0.2s';
-      setTimeout(() => { card.style.opacity = '1'; }, 50);
-    });
-  } else {
-    window.location.href = "index.html";
-  }
-});
+    createUserWithEmailAndPassword(auth, email_r, password_r)
+      .then(async (userCredential) => {
+        const user = userCredential.user;
+        const userData = { email: email_r, username: username };
+        const docRef = doc(db, "users", user.uid);
+        await setDoc(docRef, userData);
+        await auth.signOut();
+        wrapper.classList.remove('active');
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  });
+}
 
-document.getElementById('submit-r').addEventListener('click', async (e) => {
-  e.preventDefault();
-  const username = document.getElementById('user-register').value;
-  const email_r = document.getElementById('email-register').value;
-  const password_r = document.getElementById('password-register').value;
+if (submit_L) {
+  submit_L.addEventListener('click', (event) => {
+    event.preventDefault();
+    const password_l = document.getElementById('login-password').value;
+    const email_l = document.getElementById('login-email').value.trim().toLowerCase();
 
-  if (username === '') {
-    alert("Enter a username");
-    return;
-  }
-
-  createUserWithEmailAndPassword(auth, email_r, password_r)
-    .then(async (userCredential) => {
-      const user = userCredential.user;
-      const userData = {
-        email: email_r,
-        username: username
-      };
-      const docRef = doc(db, "users", user.uid);
-      await setDoc(docRef, userData);
-      window.location.href = "home.html";
-    })
-    .catch((error) => {
-      alert(error.message);
-    });
-});
-
-document.getElementById('submit-l').addEventListener('click', (event) => {
-  event.preventDefault();
-  const password_l = document.getElementById('login-password').value;
-  const email_l = document.getElementById('login-email').value.trim().toLowerCase();
-  signInWithEmailAndPassword(auth, email_l, password_l)
-    .then((userCredential) => {
-      window.location.href = "/home.html";
-    })
-    .catch((error) => {
-      alert(error.message);
-    });
-});
+    signInWithEmailAndPassword(auth, email_l, password_l)
+      .then((userCredential) => {
+        window.location.href = "home.html";
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  });
+}
